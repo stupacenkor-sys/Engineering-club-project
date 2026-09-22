@@ -10,8 +10,8 @@
     "test:ui:headed": "playwright test tests/ui --headed",
     "test:api": "playwright test tests/api",
     "test:report": "playwright show-report",
-     "format": "prettier --write .",
-     "format:check": "prettier --check ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.20.2",
+    "prettier": "^3.9.8",
     "typescript": "^7.0.2"
   }
 }
