@@ -9,7 +9,9 @@
     "test:ui": "playwright test tests/ui",
     "test:ui:headed": "playwright test tests/ui --headed",
     "test:api": "playwright test tests/api",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+     "format": "prettier --write .",
+     "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
