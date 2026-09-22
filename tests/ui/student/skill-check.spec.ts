@@ -3,7 +3,7 @@ import { test, expect, Locator } from '@playwright/test';
 const STUDENT_EMAIL = 'maria@example.com';
 const STUDENT_PASSWORD = 'password123';
 
-test.describe.only('Passing skill checks by student', () => {
+test.describe('Passing skill checks by student', () => {
   let emailInput: Locator;
   let passwordInput: Locator;
   let submitButton: Locator;
