@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "paths": { "@pages/*": ["src/pages/*"] },
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",

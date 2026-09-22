@@ -28,9 +28,26 @@ npm install
 # 3. Install required Playwright browser binaries
 npx playwright install --with-deps chromium
 
-# 4. Run UI tests in headed mode
+# 4. Create your local .env from the template and fill in the values
+cp .env.example .env    # PowerShell: Copy-Item .env.example .env
+
+# 5. Run UI tests in headed mode
 npm run test:ui:headed
 ```
+
+## 🔐 Environment Setup (`.env`)
+
+Base URL and credentials are read from a local `.env` file (loaded by `dotenv` in `playwright.config.ts`). The file is listed in `.gitignore` and **must never be committed**. Only the `.env.example` template is tracked in git.
+
+| Variable | Description |
+| :--- | :--- |
+| `BASE_URL` | Base URL of the environment under test |
+| `STUDENT_USERNAME` | Email of the student demo account |
+| `MENTOR_USERNAME` | Email of the mentor demo account |
+| `ADMIN_USERNAME` | Email of the admin demo account |
+| `PASSWORD` | Shared password of the demo accounts |
+
+Use only the predefined demo accounts from `src/config/users.config.ts` (see the rules below).
 
 ## ⚠️ Critical Team Rules (Do & Don't)
 
