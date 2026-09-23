@@ -1,36 +1,62 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { SkillCheckPage } from '@pages/skill-check.page';
+import { LoginPage } from '@pages/login.page';
+import { DashBoardPage } from '@pages/dashboard.page';
 
-const STUDENT_EMAIL = 'maria@example.com';
-const STUDENT_PASSWORD = 'password123';
+// Change after the .env file is updated with the correct credentials
+const STUDENT_EMAIL = process.env.STUDENT_USERNAME!;
+const STUDENT_PASSWORD = process.env.PASSWORD!;
 
 test.describe('Passing skill checks by student', () => {
-  let emailInput: Locator;
-  let passwordInput: Locator;
-  let submitButton: Locator;
-
   test('should navigate to skill check page when clicking link', async ({
     page,
   }) => {
+    const loginPage = new LoginPage(page);
+    const skillCheckPage = new SkillCheckPage(page);
+    const dashboardPage = new DashBoardPage(page);
+
     await test.step('Go to login page', async () => {
-      await page.goto('/login');
-      await expect(page).toHaveURL(/\/login/);
+      await loginPage.goto();
+      await loginPage.verifySelfURL();
     });
 
     await test.step('Login as student', async () => {
-      emailInput = page.getByRole('textbox', { name: 'Email' });
-      passwordInput = page.getByRole('textbox', { name: 'Password' });
-      submitButton = page.getByRole('button', { name: 'Sign in' });
-
-      await emailInput.fill(STUDENT_EMAIL);
-      await passwordInput.fill(STUDENT_PASSWORD);
-      await submitButton.click();
-
-      await expect(page).toHaveURL(/\/dashboard/);
+      await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+      await dashboardPage.verifySelfURL();
     });
 
     await test.step('Go to skill check page', async () => {
       await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await expect(page).toHaveURL(/\/quizzes/);
+      await skillCheckPage.verifySelfURL();
+    });
+  });
+
+  test('should check the filter when redirected to skill check page', async ({
+    page,
+  }) => {
+    const loginPage = new LoginPage(page);
+    const skillCheckPage = new SkillCheckPage(page);
+    const dashboardPage = new DashBoardPage(page);
+
+    await test.step('Go to login page', async () => {
+      await loginPage.goto();
+      await loginPage.verifySelfURL();
+    });
+
+    await test.step('Login as student', async () => {
+      await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+      await dashboardPage.verifySelfURL();
+    });
+
+    await test.step('Go to skill check page', async () => {
+      await page.getByRole('link', { name: 'Skill Checks' }).click();
+      await skillCheckPage.verifySelfURL();
+    });
+
+    await test.step('Verify filter is on the page', async () => {
+      await expect(skillCheckPage.filterContainer).toBeVisible();
+      await expect(skillCheckPage.areaFilter).toBeVisible();
+      await expect(skillCheckPage.levelFilter).toBeVisible();
     });
   });
 });
