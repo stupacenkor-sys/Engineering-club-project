@@ -1,4 +1,4 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { SkillCheckPage } from '@pages/skill-check.page';
 import { LoginPage } from '@pages/login.page';
 
@@ -11,20 +11,21 @@ test.describe('Passing skill checks by student', () => {
     page,
   }) => {
     const loginPage = new LoginPage(page);
+    const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Go to login page', async () => {
       await loginPage.goto();
-      await expect(page).toHaveURL(/\/login/);
+      await skillCheckPage.verifyURL(/\/login/);
     });
 
     await test.step('Login as student', async () => {
       await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
-      await expect(page).toHaveURL(/\/dashboard/);
+      await skillCheckPage.verifyURL(/\/dashboard/);
     });
 
     await test.step('Go to skill check page', async () => {
       await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await expect(page).toHaveURL(/\/quizzes/);
+      await skillCheckPage.verifyURL(/\/quizzes/);
     });
   });
 
