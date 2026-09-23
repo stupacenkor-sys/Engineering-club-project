@@ -16,7 +16,9 @@ export class LoginPage {
   async goto() {
     await this.page.goto('/login');
   }
-
+  async verificationPage() {
+    await this.page.waitForURL('/login');
+  }
   async login(email: string, pass: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(pass);
