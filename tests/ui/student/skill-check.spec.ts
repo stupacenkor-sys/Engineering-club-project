@@ -36,17 +36,17 @@ test.describe('Passing skill checks by student', () => {
 
     await test.step('Go to login page', async () => {
       await loginPage.goto();
-      await expect(page).toHaveURL(/\/login/);
+      await skillCheckPage.verifyURL(/\/login/);
     });
 
     await test.step('Login as student', async () => {
       await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
-      await expect(page).toHaveURL(/\/dashboard/);
+      await skillCheckPage.verifyURL(/\/dashboard/);
     });
 
     await test.step('Go to skill check page', async () => {
       await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await skillCheckPage.verifyURL();
+      await skillCheckPage.verifyURL(/\/quizzes/);
     });
 
     await test.step('Verify filter is on the page', async () => {

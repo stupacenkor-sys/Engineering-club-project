@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class SkillCheckPage {
   readonly page: Page;
@@ -17,7 +17,7 @@ export class SkillCheckPage {
       .filter({ has: this.levelFilter });
   }
 
-  async verifyURL() {
-    await this.page.waitForURL(/\/quizzes/);
+  async verifyURL(url: string | RegExp) {
+    await expect(this.page).toHaveURL(url);
   }
 }
