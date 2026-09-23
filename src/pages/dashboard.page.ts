@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class DashBoardPage {
   readonly page: Page;
@@ -37,6 +37,10 @@ async gotodashboard() {
   }
   async clickAiRecommendationStartRefresher() {
     await this.aiRecommendationStartRefresherButton.click();
+  }
+
+  async verifySelfURL(){
+    await expect(this.page).toHaveURL(/\/dashboard/);
   }
 
 }

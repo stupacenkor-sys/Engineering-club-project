@@ -17,7 +17,7 @@ export class SkillCheckPage {
       .filter({ has: this.levelFilter });
   }
 
-  async verifyURL(url: string | RegExp) {
-    await expect(this.page).toHaveURL(url);
+  async verifySelfURL() {
+    await expect(this.page).toHaveURL(/\/quizzes/);
   }
 }

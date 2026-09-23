@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { SkillCheckPage } from '@pages/skill-check.page';
 import { LoginPage } from '@pages/login.page';
+import { DashBoardPage } from '@pages/dashboard.page';
 
 // Change after the .env file is updated with the correct credentials
 const STUDENT_EMAIL = process.env.STUDENT_USERNAME!;
@@ -12,20 +13,21 @@ test.describe('Passing skill checks by student', () => {
   }) => {
     const loginPage = new LoginPage(page);
     const skillCheckPage = new SkillCheckPage(page);
+    const dashboardPage = new DashBoardPage(page);
 
     await test.step('Go to login page', async () => {
       await loginPage.goto();
-      await skillCheckPage.verifyURL(/\/login/);
+      await loginPage.verifySelfURL();
     });
 
     await test.step('Login as student', async () => {
       await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
-      await skillCheckPage.verifyURL(/\/dashboard/);
+      await dashboardPage.verifySelfURL();
     });
 
     await test.step('Go to skill check page', async () => {
       await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await skillCheckPage.verifyURL(/\/quizzes/);
+      await skillCheckPage.verifySelfURL();
     });
   });
 
@@ -34,20 +36,21 @@ test.describe('Passing skill checks by student', () => {
   }) => {
     const loginPage = new LoginPage(page);
     const skillCheckPage = new SkillCheckPage(page);
+    const dashboardPage = new DashBoardPage(page);
 
     await test.step('Go to login page', async () => {
       await loginPage.goto();
-      await skillCheckPage.verifyURL(/\/login/);
+      await loginPage.verifySelfURL();
     });
 
     await test.step('Login as student', async () => {
       await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
-      await skillCheckPage.verifyURL(/\/dashboard/);
+      await dashboardPage.verifySelfURL();
     });
 
     await test.step('Go to skill check page', async () => {
       await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await skillCheckPage.verifyURL(/\/quizzes/);
+      await skillCheckPage.verifySelfURL();
     });
 
     await test.step('Verify filter is on the page', async () => {
