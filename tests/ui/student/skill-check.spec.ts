@@ -22,11 +22,11 @@ test.describe('Passing skill checks by student', () => {
 
       await test.step('Login as student', async () => {
         await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
-        await sidebar.verifyDashboardURL();
+        await sidebar.verifyURL('dashboard');
       });
 
       await test.step('Go to skill check page', async () => {
-        await sidebar.clickSkillChecksLink();
+        await sidebar.clickLink('dashboard');
         await skillCheckPage.verifySelfURL();
       });
     },
