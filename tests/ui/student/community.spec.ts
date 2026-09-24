@@ -13,7 +13,7 @@ test.describe('Community page', () => {
 
     await test.step('Open login page and verify URL', async () => {
       await loginPage.goto();
-      await loginPage.verifySelfURL();
+      await loginPage.verificationPage();
     });
 
     await test.step('Log in with valid student credentials', async () => {
