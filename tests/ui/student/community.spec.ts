@@ -13,7 +13,7 @@ test.describe('Community page', () => {
 
     await test.step('Open login page and verify URL', async () => {
       await loginPage.goto();
-      await loginPage.verificationPage();
+      await loginPage.verifySelfURL();
     });
 
     await test.step('Log in with valid student credentials', async () => {
@@ -34,7 +34,7 @@ test.describe('Community page', () => {
       await communityPage.fillThreadTitle(threadTitle);
       await communityPage.clickPostThreadButton();
     });
-
+    
     await test.step('Verify that the thread title in the list matches the entered Title exactly', async () => {
       await communityPage.verifyThreadTitleMatchesEntered(threadTitle);
     });

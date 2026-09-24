@@ -6,6 +6,7 @@ export class CommunityPage {
   readonly PostThreadButton: Locator;
   readonly ThreadTag: Locator;
   readonly getThreadTitle: Locator;
+  
   constructor(page: Page) {
     this.page = page;
     this.newThreadButton = page.getByRole('button', { name: 'New thread' });
@@ -34,7 +35,6 @@ export class CommunityPage {
   async fillThreadTag(tag: string) {
     await this.ThreadTag.fill(tag);
   }
-  
   async clickPostThreadButton() {
     await this.PostThreadButton.click();
   }
