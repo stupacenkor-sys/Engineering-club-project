@@ -26,7 +26,7 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Go to skill check page', async () => {
-        await page.getByRole('link', { name: 'Skill Checks' }).click();
+        await sidebar.clickSkillChecksLink();
         await skillCheckPage.verifySelfURL();
       });
     },
@@ -36,11 +36,6 @@ test.describe('Passing skill checks by student', () => {
     page,
   }) => {
     const skillCheckPage = new SkillCheckPage(page);
-
-    await test.step('Go to skill check page', async () => {
-      await page.getByRole('link', { name: 'Skill Checks' }).click();
-      await skillCheckPage.verifySelfURL();
-    });
 
     await test.step('Verify filter is on the page', async () => {
       await expect(skillCheckPage.filterContainer).toBeVisible();
