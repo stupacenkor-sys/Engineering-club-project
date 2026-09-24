@@ -17,6 +17,10 @@ export class LoginPage {
     await this.page.goto('/login');
   }
 
+  async verifySelfURL() {
+    await expect(this.page).toHaveURL(/\/login/);
+  }
+
   async login(email: string, pass: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(pass);
