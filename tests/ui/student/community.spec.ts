@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { CommunityPage } from '@pages/community.page';
 import { LoginPage } from '@pages/login.page';
+
 test.describe('Community page', () => {
   const threadTitle = 'Test Thread Title';
   
@@ -25,6 +26,7 @@ test.describe('Community page', () => {
 
     await test.step('Go to Community page', async () => {
       await communityPage.gotoCommunityPage();
+      await communityPage.verifyCommunityPageIsOpened();
     });
 
     await test.step('Create a new thread with a specific title', async () => {
