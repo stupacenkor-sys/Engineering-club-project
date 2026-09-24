@@ -7,7 +7,7 @@ import { Sidebar } from '@pages/../sidebar';
 const STUDENT_EMAIL = process.env.STUDENT_USERNAME!;
 const STUDENT_PASSWORD = process.env.PASSWORD!;
 
-test.describe.only('Passing skill checks by student', () => {
+test.describe('Passing skill checks by student', () => {
   test.beforeEach(
     'should navigate to skill check page when clicking link',
     async ({ page }) => {
