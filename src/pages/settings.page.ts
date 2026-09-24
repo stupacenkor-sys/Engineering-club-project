@@ -13,7 +13,7 @@ export class SettingsPage {
     this.fullNameInput = page.getByRole('textbox', { name: 'Full name' });
     this.emailInput = page.getByRole('textbox', { name: 'Email' });
     this.currentRoleInput = page.getByRole('textbox', { name: 'Current role' });
-    this.targetRoleInput = page.getByRole('textbox', { name: 'Target role' })
+    this.targetRoleInput = page.getByRole('textbox', { name: 'Target role' });
     this.bioInput = page.getByRole('textbox', { name: 'Bio' });
   }
 
@@ -23,5 +23,19 @@ export class SettingsPage {
 
   async verifySelfURL() {
     await expect(this.page).toHaveURL(/\/settings/);
+  }
+
+  async verifyProfileData(userData: {
+    fullName: string;
+    email: string;
+    currentRole: string;
+    targetRole: string;
+    bio: string;
+  }) {
+    await expect(this.fullNameInput).toHaveValue(userData.fullName);
+    await expect(this.emailInput).toHaveValue(userData.email);
+    await expect(this.currentRoleInput).toHaveValue(userData.currentRole);
+    await expect(this.targetRoleInput).toHaveValue(userData.targetRole);
+    await expect(this.bioInput).toHaveValue(userData.bio);
   }
 }

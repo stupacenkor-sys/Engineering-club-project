@@ -73,17 +73,7 @@ test.describe('Account Settings', () => {
     });
 
     await test.step('Verify current student data is displayed', async () => {
-      await expect(settingsPage.fullNameInput).toHaveValue(
-        studentData.fullName,
-      );
-      await expect(settingsPage.emailInput).toHaveValue(studentData.email);
-      await expect(settingsPage.currentRoleInput).toHaveValue(
-        studentData.currentRole,
-      );
-      await expect(settingsPage.targetRoleInput).toHaveValue(
-        studentData.targetRole,
-      );
-      await expect(settingsPage.bioInput).toHaveValue(studentData.bio);
+      await settingsPage.verifyProfileData(studentData);
     });
   });
 });
