@@ -38,9 +38,19 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await expect(skillCheckPage.filterContainer).toBeVisible();
       await expect(skillCheckPage.areaFilter).toBeVisible();
-      await expect(skillCheckPage.levelFilter).toBeVisible();
+      await expect(skillCheckPage.levelFilterContainer).toBeVisible();
+    });
+  });
+
+  test('should check "LEVEL" filter for corect values', async ({ page }) => {
+    const skillCheckPage = new SkillCheckPage(page);
+
+    await test.step('Verify filter is on the page', async () => {
+      await expect(skillCheckPage.levelFilterAllLink).toBeVisible();
+      await expect(skillCheckPage.levelFilterBasicLink).toBeVisible();
+      await expect(skillCheckPage.levelFilterIntermediateLink).toBeVisible();
+      await expect(skillCheckPage.levelFilterAdvancedLink).toBeVisible();
     });
   });
 });
