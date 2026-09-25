@@ -33,9 +33,9 @@ jobs:
         env:
           CI: true
           BASE_URL: ${{ secrets.BASE_URL }}
-          STUDENT_USERNAME: ${{ secrets.STUDENT_EMAIL }}
-          MENTOR_USERNAME: ${{ secrets.MENTOR_EMAIL }}
-          ADMIN_USERNAME: ${{ secrets.ADMIN_EMAIL }}
+          STUDENT_EMAIL: ${{ secrets.STUDENT_EMAIL }}
+          MENTOR_EMAIL: ${{ secrets.MENTOR_EMAIL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
           STUDENT_NAME: ${{ secrets.STUDENT_NAME }}
 
