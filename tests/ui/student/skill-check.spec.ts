@@ -18,7 +18,9 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Login as student', async () => {
-        await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+       await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
+
+
         await sidebar.verifyURL.dashboard();
       });
 
