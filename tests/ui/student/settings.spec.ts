@@ -4,9 +4,7 @@ import { SettingsPage } from '@pages/settings.page';
 import { DashBoardPage } from '@pages/dashboard.page';
 import { studentData, updatedProfileData } from '../../../src/test-data/users';
 
-// Change after the .env file is updated with the correct credentials
-const STUDENT_EMAIL = process.env.STUDENT_USERNAME!;
-const STUDENT_PASSWORD = process.env.PASSWORD!;
+
 
 test.describe('Account Settings', () => {
   test('should have access to settings page when student is authenticated', async ({
@@ -22,7 +20,7 @@ test.describe('Account Settings', () => {
     });
 
     await test.step('Log in with valid student credentials', async () => {
-      await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+      await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
       await dashboardPage.verifySelfURL();
     });
 

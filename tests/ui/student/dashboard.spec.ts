@@ -13,7 +13,7 @@ test.describe('Dashboard page', () => {
     dashboardPage = new DashboardPage(page);
 
     await loginPage.goto();
-    await loginPage.login(process.env.STUDENT_USERNAME!, process.env.PASSWORD!);
+    await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
   });
 
   test('should open dashboard page when student logs in', async () => {
