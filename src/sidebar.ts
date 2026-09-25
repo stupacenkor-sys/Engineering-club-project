@@ -90,7 +90,11 @@ export class Sidebar {
     this.verifyURL = this.mapLinks((link) => async () => expect(this.page).toHaveURL(link.urlPattern));
   }
 
-
+  /**
+   * Maps the links to their respective actions
+   * @param action - The action to perform on each link like locator.click()
+   * @returns A record mapping each link name to its corresponding action
+   */
   private mapLinks<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkNames, T> {
     const result = {} as Record<SidebarLinkNames, T>;
     const linkNames = Object.keys(this.links) as SidebarLinkNames[];
