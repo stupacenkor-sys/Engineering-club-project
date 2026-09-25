@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '@pages/login.page';
 import { SettingsPage } from '@pages/settings.page';
-import { DashBoardPage } from '@pages/dashboard.page';
+import { DashboardPage } from '@pages/dashboard.page';
 import { studentData, updatedProfileData } from '../../../src/test-data/users';
 
-
+const STUDENT_EMAIL = process.env.STUDENT_EMAIL!;
+const STUDENT_PASSWORD = process.env.PASSWORD!;
 
 test.describe('Account Settings', () => {
   test('should have access to settings page when student is authenticated', async ({
@@ -20,7 +21,7 @@ test.describe('Account Settings', () => {
     });
 
     await test.step('Log in with valid student credentials', async () => {
-      await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
+      await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
       await dashboardPage.verifySelfURL();
     });
 
@@ -49,9 +50,11 @@ test.describe('Account Settings', () => {
   });
 
   test.describe('Authenticated student', () => {
+    test.describe.configure({ mode: 'serial' });
+
     test.beforeEach(async ({ page }) => {
       const loginPage = new LoginPage(page);
-      const dashboardPage = new DashBoardPage(page);
+      const dashboardPage = new DashboardPage(page);
       const settingsPage = new SettingsPage(page);
 
       await loginPage.goto();
