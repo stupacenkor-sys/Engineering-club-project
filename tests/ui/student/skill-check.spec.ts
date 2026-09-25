@@ -26,8 +26,8 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Go to skill check page', async () => {
-        await sidebar.clickLink('dashboard');
-        await skillCheckPage.verifySelfURL();
+        await sidebar.clickLink('skillChecks');
+        await sidebar.verifyURL('skillChecks');
       });
     },
   );
