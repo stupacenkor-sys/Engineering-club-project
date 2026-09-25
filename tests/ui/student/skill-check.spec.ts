@@ -3,9 +3,7 @@ import { SkillCheckPage } from '@pages/skill-check.page';
 import { LoginPage } from '@pages/login.page';
 import { Sidebar } from '@pages/../sidebar';
 
-// Change after the .env file is updated with the correct credentials
-const STUDENT_EMAIL = process.env.STUDENT_USERNAME!;
-const STUDENT_PASSWORD = process.env.PASSWORD!;
+
 
 test.describe('Passing skill checks by student', () => {
   test.beforeEach(
@@ -20,7 +18,9 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Login as student', async () => {
-        await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+       await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
+
+
         await sidebar.verifyURL.dashboard();
       });
 
