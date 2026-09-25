@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '@pages/login.page';
 import { SettingsPage } from '@pages/settings.page';
-import { DashBoardPage } from '@pages/dashboard.page';
+import { DashboardPage } from '@pages/dashboard.page';
 import { studentData } from '../../../src/test-data/users';
 
 // Change after the .env file is updated with the correct credentials
@@ -14,7 +14,7 @@ test.describe('Account Settings', () => {
   }) => {
     const loginPage = new LoginPage(page);
     const settingsPage = new SettingsPage(page);
-    const dashboardPage = new DashBoardPage(page);
+    const dashboardPage = new DashboardPage(page);
 
     await test.step('Open login page', async () => {
       await loginPage.goto();
@@ -54,7 +54,7 @@ test.describe('Account Settings', () => {
     page,
   }) => {
     const loginPage = new LoginPage(page);
-    const dashboardPage = new DashBoardPage(page);
+    const dashboardPage = new DashboardPage(page);
     const settingsPage = new SettingsPage(page);
 
     await test.step('Open login page', async () => {

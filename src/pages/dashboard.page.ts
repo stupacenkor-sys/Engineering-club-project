@@ -94,9 +94,8 @@ export class DashboardPage {
       this.page.getByRole('heading', { name: courseTitle, level: 1 }),
     ).toBeVisible();
   }
-}
-  async verifySelfURL(){
+
+  async verifySelfURL() {
     await expect(this.page).toHaveURL(/\/dashboard/);
   }
-
 }
