@@ -14,7 +14,7 @@ test.describe('Account Settings', () => {
   }) => {
     const loginPage = new LoginPage(page);
     const settingsPage = new SettingsPage(page);
-    const dashboardPage = new DashBoardPage(page);
+    const dashboardPage = new DashboardPage(page);
 
     await test.step('Open login page', async () => {
       await loginPage.goto();

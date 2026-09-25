@@ -37,6 +37,7 @@ jobs:
           MENTOR_USERNAME: ${{ secrets.MENTOR_USERNAME }}
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
+          STUDENT_NAME: ${{ secrets.STUDENT_NAME }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
