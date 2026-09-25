@@ -16,12 +16,14 @@ type SidebarLinkNames =
   | 'admin'
   | 'settings';
 
+type SidebarLinkValue = { locator: Locator; urlPattern: RegExp };
+
 export class Sidebar {
   readonly page: Page;
-  readonly links: Record<
-    SidebarLinkNames,
-    { locator: Locator; urlPattern: RegExp }
-  >;
+
+  readonly links: Record<SidebarLinkNames, SidebarLinkValue>;
+  readonly clickLink: Record<SidebarLinkNames, () => Promise<void>>;
+  readonly verifyURL: Record<SidebarLinkNames, () => Promise<void>>;
 
   constructor(page: Page) {
     this.page = page;
@@ -83,13 +85,18 @@ export class Sidebar {
         urlPattern: /\/settings/,
       },
     };
+
+    this.clickLink = this.mapLinks((link) => async () => link.locator.click());
+    this.verifyURL = this.mapLinks((link) => async () => expect(this.page).toHaveURL(link.urlPattern));
   }
 
-  async clickLink(name: keyof typeof this.links) {
-    await this.links[name].locator.click();
-  }
 
-  async verifyURL(name: keyof typeof this.links) {
-    await expect(this.page).toHaveURL(this.links[name].urlPattern);
+  private mapLinks<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkNames, T> {
+    const result = {} as Record<SidebarLinkNames, T>;
+    const linkNames = Object.keys(this.links) as SidebarLinkNames[];
+    for (const name of linkNames) {
+      result[name] = action(this.links[name]);
+    }
+    return result;
   }
 }
