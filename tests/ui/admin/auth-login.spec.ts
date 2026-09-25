@@ -10,7 +10,7 @@ test.describe('Admin Login', () => {
     });
 
     await test.step('Log in with valid admin credentials', async () => {
-      await loginPage.login(process.env.ADMIN_USERNAME!, process.env.PASSWORD!);
+      await loginPage.login(process.env.ADMIN_EMAIL!, process.env.PASSWORD!);
     });
 
     await test.step('Verify redirect to dashboard', async () => {

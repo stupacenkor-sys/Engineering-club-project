@@ -18,7 +18,7 @@ test.describe('Community page', () => {
 
     await test.step('Log in with valid student credentials', async () => {
       await loginPage.login(
-        process.env.STUDENT_USERNAME!,
+        process.env.STUDENT_EMAIL!,
         process.env.PASSWORD!,
       );
       await expect(page).toHaveURL('/dashboard');
@@ -34,7 +34,7 @@ test.describe('Community page', () => {
       await communityPage.fillThreadTitle(threadTitle);
       await communityPage.clickPostThreadButton();
     });
-    
+
     await test.step('Verify that the thread title in the list matches the entered Title exactly', async () => {
       await communityPage.verifyThreadTitleMatchesEntered(threadTitle);
     });
