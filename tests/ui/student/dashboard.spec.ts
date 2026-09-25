@@ -3,10 +3,11 @@ import { LoginPage } from '@pages/login.page';
 import { DashboardPage } from '@pages/dashboard.page';
 
 test.describe('Dashboard page', () => {
+  let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
 
   test.beforeEach(async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);
 
     await loginPage.goto();
