@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { SkillCheckPage } from '@pages/skill-check.page';
 import { LoginPage } from '@pages/login.page';
 import { Sidebar } from '@pages/../sidebar';
@@ -11,7 +11,6 @@ test.describe('Passing skill checks by student', () => {
     async ({ page }) => {
       const loginPage = new LoginPage(page);
       const sidebar = new Sidebar(page);
-      const skillCheckPage = new SkillCheckPage(page);
 
       await test.step('Go to login page', async () => {
         await loginPage.goto();
@@ -19,13 +18,13 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Login as student', async () => {
-        await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
-        await sidebar.verifyURL('dashboard');
+        await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+        await sidebar.verifyURL.dashboard();
       });
 
       await test.step('Go to skill check page', async () => {
-        await sidebar.clickLink('skillChecks');
-        await sidebar.verifyURL('skillChecks');
+        await sidebar.clickLink.skillChecks();
+        await sidebar.verifyURL.skillChecks();
       });
     },
   );
