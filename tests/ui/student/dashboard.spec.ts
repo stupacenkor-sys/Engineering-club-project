@@ -2,6 +2,8 @@ import { test } from '@playwright/test';
 import { LoginPage } from '@pages/login.page';
 import { DashboardPage } from '@pages/dashboard.page';
 
+const STUDENT_DISPLAY_NAME = 'Maria';
+
 test.describe('Dashboard page', () => {
   let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
@@ -28,7 +30,7 @@ test.describe('Dashboard page', () => {
 
   test('should display user name when student opens dashboard', async () => {
     await test.step('Verify user name in welcome message', async () => {
-      await dashboardPage.expectWelcomeMessageFor(process.env.STUDENT_NAME!);
+      await dashboardPage.expectWelcomeMessageFor(STUDENT_DISPLAY_NAME);
     });
   });
 
