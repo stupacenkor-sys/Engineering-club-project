@@ -95,3 +95,8 @@ export class DashboardPage {
     ).toBeVisible();
   }
 }
+  async verifySelfURL(){
+    await expect(this.page).toHaveURL(/\/dashboard/);
+  }
+
+}
