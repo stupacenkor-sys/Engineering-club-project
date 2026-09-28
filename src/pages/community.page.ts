@@ -6,7 +6,7 @@ export class CommunityPage {
   readonly PostThreadButton: Locator;
   readonly ThreadTag: Locator;
   readonly getThreadTitle: Locator;
-  
+  readonly authoroftheThread: Locator;
   constructor(page: Page) {
     this.page = page;
     this.newThreadButton = page.getByRole('button', { name: 'New thread' });
@@ -14,6 +14,7 @@ export class CommunityPage {
     this.ThreadTag = page.getByRole('textbox', { name: 'Tag' });
     this.PostThreadButton = page.getByRole('button', { name: 'Post thread' });
     this.getThreadTitle = page.getByRole('heading', { level: 2 });
+    this.authoroftheThread = page.getByText('just now');
   }
 
   async gotoCommunityPage() {
@@ -41,5 +42,13 @@ export class CommunityPage {
 
   async verifyThreadTitleMatchesEntered(title: string) {
     await expect(this.getThreadTitle).toHaveText(title);
+  }
+  async verifyThreadAuthorIsCurrentUser(Name: string) {
+
+   await expect(this.page).toHaveURL(/\/community\/[^/]+$/);
+  let threadAuthor = ((await this.authoroftheThread.textContent()) ?? '').split(' · ')[0].trim();
+
+  expect(threadAuthor).toBe(Name);
+
   }
 }
