@@ -35,6 +35,20 @@ export class SettingsPage {
     await this.saveChangesButton.click();
   }
 
+  async saveChangesAndWait() {
+    const responsePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/settings') &&
+        response.request().method() === 'POST',
+    );
+
+    await this.saveChanges();
+
+    const response = await responsePromise;
+
+    expect(response.ok()).toBeTruthy();
+  }
+
   getAvatar(avatar: string): Locator {
     return this.page.getByRole('main').getByText(avatar, { exact: true });
   }
@@ -91,8 +105,8 @@ export class SettingsPage {
   }
 
   async getEmailValidationMessage(): Promise<string> {
-  return this.emailInput.evaluate(
-    (input: HTMLInputElement) => input.validationMessage,
-  );
-}
+    return this.emailInput.evaluate(
+      (input: HTMLInputElement) => input.validationMessage,
+    );
+  }
 }

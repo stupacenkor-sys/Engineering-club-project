@@ -91,7 +91,7 @@ test.describe('Account Settings', () => {
       });
 
       await test.step('Save changes', async () => {
-        await settingsPage.saveChanges();
+        await settingsPage.saveChangesAndWait();
       });
 
       await test.step('Verify avatar is displayed', async () => {
@@ -99,11 +99,16 @@ test.describe('Account Settings', () => {
       });
 
       await test.step('Restore original avatar', async () => {
+        await page.reload();
+
         await settingsPage.changeAvatar(studentData.avatar);
-        await settingsPage.saveChanges();
+        await settingsPage.saveChangesAndWait();
       });
 
       await test.step('Verify original avatar is restored', async () => {
+        await page.reload();
+
+        await settingsPage.verifyAvatarInputValue(studentData.avatar);
         await settingsPage.verifyAvatarDisplayed(studentData.avatar);
       });
     });
