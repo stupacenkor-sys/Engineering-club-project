@@ -1,11 +1,12 @@
 import { test } from '@playwright/test';
-import { SkillCheckPage } from '@pages/skill-check.page';
+import { SkillCheckPage } from '@pages/skill-check/skill-check.page';
 import { LoginPage } from '@pages/login.page';
 import { Sidebar } from '@pages/../sidebar';
 
+const STUDENT_EMAIL = process.env.STUDENT_EMAIL!;
+const STUDENT_PASSWORD = process.env.PASSWORD!;
 
-
-test.describe('Passing skill checks by student', () => {
+test.describe.only('Passing skill checks by student', () => {
   test.beforeEach(
     'should navigate to skill check page when clicking link',
     async ({ page }) => {
@@ -18,8 +19,7 @@ test.describe('Passing skill checks by student', () => {
       });
 
       await test.step('Login as student', async () => {
-       await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
-
+        await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
 
         await sidebar.verifyURL.dashboard();
       });
@@ -37,7 +37,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.verifyFilter();
+      await skillCheckPage.filter.verifyFilter();
     });
   });
 
@@ -45,7 +45,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.verifyLevelFilterValues();
+      await skillCheckPage.filter.verifyLevelFilterValues();
     });
   });
 
@@ -53,7 +53,15 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.verifyAreaFilterValues();
+      await skillCheckPage.filter.verifyAreaFilterValues();
+    });
+  });
+
+  test('should verify list when clicking basic level filter link', async ({ page }) => {
+    const skillCheckPage = new SkillCheckPage(page);
+
+    await test.step('Verify filter is on the page', async () => {
+      await skillCheckPage.clickLevelBasicAndVerifyList();
     });
   });
 });
