@@ -5,7 +5,8 @@ import { ProfilePage } from '@pages/profile.page';
 test.describe('Community page', () => {
   const threadTitle = 'Test Thread Title';
   const threadTag = 'Test Tag';
-  const threadReply='Test Reply'
+  const threadReply = 'Test Reply';
+
   test('The thread title in the list matches the entered Title exactly', async ({
     page,
   }) => {
@@ -37,6 +38,7 @@ test.describe('Community page', () => {
       await communityPage.verifyThreadTitleMatchesEntered(threadTitle);
     });
   });
+
   test('Thread author is the same user who is currently logged in.', async ({
     page,
   }) => {
@@ -44,6 +46,7 @@ test.describe('Community page', () => {
     const loginPage = new LoginPage(page);
     const profilePage = new ProfilePage(page);
     let loggedInUserName = '';
+
     await test.step('Open login page and verify URL', async () => {
       await loginPage.goto();
       await loginPage.verifySelfURL();
@@ -53,13 +56,16 @@ test.describe('Community page', () => {
       await loginPage.login(process.env.STUDENT_EMAIL!, process.env.PASSWORD!);
       await expect(page).toHaveURL('/dashboard');
     });
+
     await test.step('Go to Profile page', async () => {
       await profilePage.gotoProfilePage();
       await profilePage.verifySelfProfileURL();
     });
+
     await test.step('Get name of the logged in user', async () => {
       loggedInUserName = await profilePage.profileName.textContent();
     });
+
     await test.step('Go to Community page', async () => {
       await communityPage.gotoCommunityPage();
       await communityPage.verifyCommunityPageIsOpened();
@@ -75,6 +81,7 @@ test.describe('Community page', () => {
       await communityPage.verifyThreadAuthorIsCurrentUser(loggedInUserName);
     });
   });
+
   test('The thread tag in the list matches the tag selected in the form', async ({
     page,
   }) => {
@@ -102,10 +109,12 @@ test.describe('Community page', () => {
       await communityPage.fillThreadTag(threadTag);
       await communityPage.clickPostThreadButton();
     });
+
     await test.step('Verify that the thread Tag in the list matches the entered Tag exactly', async () => {
       await communityPage.verifyThreadTagMatchesEntered(threadTag);
     });
   });
+
   test('Clicking "Post reply" successfully posts the comment', async ({
     page,
   }) => {
@@ -135,7 +144,7 @@ test.describe('Community page', () => {
     });
     await test.step('Post a new reply', async () => {
       await communityPage.postreply(threadReply);
-      await expect (page.getByText(threadReply)).toBeVisible()
+      await expect(page.getByText(threadReply)).toBeVisible();
     });
   });
 });
