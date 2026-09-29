@@ -20,7 +20,7 @@ const student2: Credentials = {
   password: 'password123',
 };
 
-test.only('Login as two different students', async ({ page }) => {
+test('Login as two different students', async ({ page }) => {
   const loginPage = new LoginPage(page); // page object for the login page
   const sidebar = new Sidebar(page); // page object for the sidebar
   await test.step('go to Login Page', async () => {
