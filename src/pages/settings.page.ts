@@ -223,4 +223,14 @@ export class SettingsPage {
   async verifyCommunityRepliesNotificationUnchecked() {
     await expect(this.communityRepliesCheckbox).not.toBeChecked();
   }
+
+  async ensureAvatar(avatar: string) {
+  const currentAvatar = await this.avatarInput.inputValue();
+
+  if (currentAvatar !== avatar) {
+    await this.changeAvatar(avatar);
+    await this.saveChangesAndWait();
+    await this.page.reload();
+  }
+}
 }

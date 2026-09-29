@@ -78,39 +78,49 @@ test.describe('Account Settings', () => {
     test('should display avatar on settings page', async ({ page }) => {
       const settingsPage = new SettingsPage(page);
 
+      await test.step('Reset avatar state', async () => {
+        await settingsPage.ensureAvatar(studentData.avatar);
+      });
+
       await settingsPage.verifyAvatarDisplayed(studentData.avatar);
     });
 
     test('should change avatar when valid value is saved', async ({ page }) => {
       const settingsPage = new SettingsPage(page);
 
-      const newAvatar = 'MM';
+      const newAvatar = 'DD';
 
-      await test.step('Change avatar', async () => {
-        await settingsPage.changeAvatar(newAvatar);
+      await test.step('Reset avatar state', async () => {
+        await settingsPage.ensureAvatar(studentData.avatar);
       });
 
-      await test.step('Save changes', async () => {
-        await settingsPage.saveChangesAndWait();
-      });
+      try {
+        await test.step('Change avatar', async () => {
+          await settingsPage.changeAvatar(newAvatar);
+        });
 
-      await test.step('Verify avatar is displayed', async () => {
-        await settingsPage.verifyAvatarDisplayed(newAvatar);
-      });
+        await test.step('Save changes', async () => {
+          await settingsPage.saveChangesAndWait();
+        });
 
-      await test.step('Restore original avatar', async () => {
-        await page.reload();
+        await test.step('Verify avatar is displayed', async () => {
+          await settingsPage.verifyAvatarDisplayed(newAvatar);
+        });
+      } finally {
+        await test.step('Restore original avatar', async () => {
+          await page.reload();
 
-        await settingsPage.changeAvatar(studentData.avatar);
-        await settingsPage.saveChangesAndWait();
-      });
+          await settingsPage.changeAvatar(studentData.avatar);
+          await settingsPage.saveChangesAndWait();
+        });
 
-      await test.step('Verify original avatar is restored', async () => {
-        await page.reload();
+        await test.step('Verify original avatar is restored', async () => {
+          await page.reload();
 
-        await settingsPage.verifyAvatarInputValue(studentData.avatar);
-        await settingsPage.verifyAvatarDisplayed(studentData.avatar);
-      });
+          await settingsPage.verifyAvatarInputValue(studentData.avatar);
+          await settingsPage.verifyAvatarDisplayed(studentData.avatar);
+        });
+      }
     });
 
     test('should accept avatar with 1 to 3 letters and reject additional letters', async ({
