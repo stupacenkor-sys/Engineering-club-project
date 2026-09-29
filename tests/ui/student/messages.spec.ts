@@ -19,7 +19,7 @@ test.describe('Messages Page', () => {
       await expect(page).toHaveURL('/dashboard');
     });
 
-    await test.step('Go to Community page', async () => {
+    await test.step('Go to Message page', async () => {
       await messagesPage.gotoMessagesPage();
     });
 
@@ -27,7 +27,7 @@ test.describe('Messages Page', () => {
       await messagesPage.clickNewMessagesButton();
     });
 
-    await test.step('Click on the NewMessages button', async () => {
+    await test.step('Search user by partial name', async () => {
       await messagesPage.searchUsers(partialName);
     });
   });
