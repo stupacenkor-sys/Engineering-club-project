@@ -29,7 +29,4 @@ export class MessagesPage {
     await expect(this.userSearchResults).toContainText(query);
   }
 
-  async startConversationWith() {
-    await this.userSearchResults.click()
-  }
 }
