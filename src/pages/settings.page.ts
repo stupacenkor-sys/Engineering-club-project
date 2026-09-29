@@ -109,4 +109,22 @@ export class SettingsPage {
       (input: HTMLInputElement) => input.validationMessage,
     );
   }
+
+  getWeeklyGoalOption(hours: string): Locator {
+    return this.page
+      .locator('label')
+      .filter({ hasText: new RegExp(`^${hours} h$`) });
+  }
+
+  getWeeklyGoalRadio(hours: string): Locator {
+    return this.getWeeklyGoalOption(hours).locator('input[type="radio"]');
+  }
+
+  async selectWeeklyGoal(hours: string) {
+    await this.getWeeklyGoalOption(hours).click();
+  }
+
+  async verifyWeeklyGoalSelected(hours: string) {
+    await expect(this.getWeeklyGoalRadio(hours)).toBeChecked();
+  }
 }

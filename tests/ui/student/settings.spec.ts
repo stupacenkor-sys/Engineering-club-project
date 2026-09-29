@@ -194,5 +194,48 @@ test.describe('Account Settings', () => {
         await expect(settingsPage.emailInput).toHaveValue(studentData.email);
       });
     });
+
+    test('should select weekly study goal', async ({ page }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Select weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal('8');
+      });
+
+      await test.step('Verify weekly study goal is selected', async () => {
+        await settingsPage.verifyWeeklyGoalSelected('8');
+      });
+    });
+
+    test('should save selected learning preferences', async ({ page }) => {
+      const settingsPage = new SettingsPage(page);
+
+      const originalWeeklyGoal = '4';
+      const newWeeklyGoal = '8';
+
+      await test.step('Select weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal('8');
+      });
+
+      await test.step('Save changes', async () => {
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify weekly study goal is saved', async () => {
+        await page.reload();
+
+        await settingsPage.verifyWeeklyGoalSelected(newWeeklyGoal);
+      });
+
+      await test.step('Restore original weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal(originalWeeklyGoal);
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify original weekly study goal is restored', async () => {
+        await page.reload();
+        await settingsPage.verifyWeeklyGoalSelected(originalWeeklyGoal);
+      });
+    });
   });
 });
