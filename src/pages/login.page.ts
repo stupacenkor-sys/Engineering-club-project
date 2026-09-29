@@ -26,8 +26,4 @@ export class LoginPage {
     await this.passwordInput.fill(pass);
     await this.submitButton.click();
   }
-
-  async verifySelfURL() {
-    await expect(this.page).toHaveURL(/\/login/);
-  }
 }
