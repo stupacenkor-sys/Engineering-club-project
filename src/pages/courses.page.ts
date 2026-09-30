@@ -36,7 +36,7 @@ export class CoursesPage {
     });
   }
 
-  async open() {
+  async gotoCourses() {
     await this.page.goto('/courses');
   }
 
@@ -104,7 +104,7 @@ export class CoursesPage {
 
     await expect(parts.kicker).toHaveText(/^.+ · \d+ modules$/i);
     await expect(parts.status).toHaveText(
-      /^(Completed|In progress|Not started)/,
+      /^(Completed|In progress|Not started|New)/,
     );
     await expect(parts.titleLink).not.toBeEmpty();
     await expect(parts.description).toBeAttached();

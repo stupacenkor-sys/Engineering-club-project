@@ -4,15 +4,15 @@ type CourseStat = 'Total' | 'Workload' | 'Lessons' | 'Gates';
 
 export class CourseDetailsPage {
   readonly page: Page;
-  private readonly main: Locator;
+  private readonly mainContent: Locator;
 
   readonly backToCoursesLink: Locator;
-  readonly courseKicker: Locator;
   readonly courseTitle: Locator;
+  readonly courseKicker: Locator;
   readonly courseDescription: Locator;
   readonly contentLanguageNote: Locator;
-  readonly mentor: Locator;
-  readonly startOrContinueLink: Locator;
+  readonly mentorLabel: Locator;
+  readonly enrollButton: Locator;
 
   readonly gatesHeading: Locator;
   readonly gateCards: Locator;
@@ -20,37 +20,37 @@ export class CourseDetailsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.main = page.getByRole('main');
+    this.mainContent = page.getByRole('main');
 
-    this.backToCoursesLink = this.main.getByRole('link', {
+    this.backToCoursesLink = this.mainContent.getByRole('link', {
       name: 'Back to courses',
     });
-    this.courseKicker = this.main.locator('.card-kicker').first();
-    this.courseTitle = this.main.getByRole('heading', { level: 1 });
+    this.courseTitle = this.mainContent.getByRole('heading', { level: 1 });
+    this.courseKicker = this.courseTitle.locator('..').locator('.card-kicker');
     this.courseDescription = this.courseTitle
       .locator('..')
       .locator(':scope > p');
     this.contentLanguageNote = page.getByTestId('content-language-note');
-    this.mentor = this.main.getByText(/^Mentor: /);
-    this.startOrContinueLink = this.main.getByRole('link', {
-      name: /^(Start|Continue) · Module \d+$/,
+    this.mentorLabel = this.mainContent.getByText(/^Mentor: /);
+    this.enrollButton = this.mainContent.getByRole('button', {
+      name: 'Enroll',
     });
 
-    this.gatesHeading = this.main.getByRole('heading', {
+    this.gatesHeading = this.mainContent.getByRole('heading', {
       name: /^Gates · \d+$/,
     });
     this.gateCards = this.gatesHeading.locator('..').locator('.card');
-    this.lessonCheckboxes = this.main.getByRole('checkbox', {
+    this.lessonCheckboxes = this.mainContent.getByRole('checkbox', {
       name: /^Mark ".+" as completed$/,
     });
   }
 
-  async open(slug: string) {
+  async gotoCourse(slug: string) {
     await this.page.goto(`/courses/${slug}`);
   }
 
   getStatValue(label: CourseStat) {
-    return this.main
+    return this.mainContent
       .getByText(label, { exact: true })
       .locator('..')
       .locator(':scope > :first-child');
@@ -70,12 +70,16 @@ export class CourseDetailsPage {
     return (await this.courseTitle.innerText()).trim();
   }
 
-  async reload() {
+  async reloadPage() {
     await this.page.reload();
   }
 
   async expectCourseOpened(slug: string, title: string) {
     await expect(this.page).toHaveURL(new RegExp(`/courses/${slug}(#.*)?$`));
     await expect(this.courseTitle).toHaveText(title);
+  }
+
+  async verifySelfURL() {
+    await expect(this.page).toHaveURL(/\/courses\/[\w-]+$/);
   }
 }
