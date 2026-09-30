@@ -23,6 +23,7 @@ const student2: Credentials = {
 test('Login as two different students', async ({ page }) => {
   const loginPage = new LoginPage(page); // page object for the login page
   const sidebar = new Sidebar(page); // page object for the sidebar
+
   await test.step('go to Login Page', async () => {
     await loginPage.goto(); // page object for the login page
     await loginPage.verifySelfURL(); // page object for the login page
@@ -44,7 +45,7 @@ test('Login as two different students', async ({ page }) => {
 
     await userMenuButton.click();
     await signOutButton.click();
-    await expect(page).toHaveURL(/\/login/);
+    await loginPage.verifySelfURL(); // page object for the login page
   });
 
   await test.step('Login as Student 2', async () => {
