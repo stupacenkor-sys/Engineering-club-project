@@ -66,4 +66,14 @@ test.describe('Passing skill checks by student', () => {
       await skillCheckPage.clickLevelBasicAndVerifyList();
     });
   });
+
+  test('should verify list when clicking "QA theory" area filter link', async ({
+    page,
+  }) => {
+    const skillCheckPage = new SkillCheckPage(page);
+
+    await test.step('Verify filter is on the page', async () => {
+      await skillCheckPage.clickAreaQATheoryAndVerifyList();
+    });
+  });
 });
