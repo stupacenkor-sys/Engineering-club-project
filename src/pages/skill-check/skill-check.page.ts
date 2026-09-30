@@ -24,4 +24,14 @@ export class SkillCheckPage {
 
     await this.list.verifyListByArea('qaTheory');
   }
+
+  async clickLevelBasicAreaQAAndVerifyList() {
+    await this.filter.clickLevelFilter.basic();
+    await this.filter.verifyLevelFilter.basic();
+
+    await this.filter.clickAreaFilter.qaTheory();
+    await this.filter.verifyAreaFilter.qaTheory();
+
+    await this.list.verifyListByAreaAndLevel('qaTheory', 'basic');
+  }
 }
