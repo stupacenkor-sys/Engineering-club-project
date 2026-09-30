@@ -72,6 +72,8 @@ test.describe('Account Settings', () => {
     }) => {
       const settingsPage = new SettingsPage(page);
 
+      await settingsPage.ensureProfileData(studentData)
+
       await settingsPage.verifyProfileData(studentData);
     });
 
@@ -148,14 +150,15 @@ test.describe('Account Settings', () => {
     }) => {
       const settingsPage = new SettingsPage(page);
 
+      await settingsPage.ensureProfileData(studentData);
+
       try {
         await test.step('Update profile fields', async () => {
           await settingsPage.updateProfile(updatedProfileData);
         });
 
         await test.step('Save changes', async () => {
-          await settingsPage.saveChanges();
-          await settingsPage.verifySaved();
+          await settingsPage.saveChangesAndWait();
         });
 
         await test.step('Reload settings page', async () => {
@@ -170,8 +173,7 @@ test.describe('Account Settings', () => {
       } finally {
         await test.step('Restore original profile data', async () => {
           await settingsPage.updateProfile(studentData);
-          await settingsPage.saveChanges();
-          await settingsPage.verifySaved();
+          await settingsPage.saveChangesAndWait();
         });
       }
 
