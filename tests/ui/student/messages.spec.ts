@@ -1,9 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { MessagesPage } from '@pages/messages.page';
 import { LoginPage } from '@pages/login.page';
+
 test.describe('Messages Page', () => {
-  const partialName = 'And';
-  test('Typing a name in the search field filters the list and the matching user appears', async ({
+  
+const partialName = 'And';
+
+test('Typing a name in the search field filters the list and the matching user appears', async ({
     page,
   }) => {
     const messagesPage = new MessagesPage(page);

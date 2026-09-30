@@ -1,10 +1,15 @@
 import { Page, Locator, expect } from '@playwright/test';
 export class MessagesPage {
+  
   readonly page: Page;
+
   readonly newMessagesButton: Locator;
   readonly searchUsersInput: Locator;
   readonly newMessageModal: Locator;
   readonly userSearchResults: Locator;
+  readonly messageInput: Locator;
+  readonly sendMessageButton: Locator;
+
   constructor(page: Page) {
     this.page = page;
     this.newMessagesButton = page.getByRole('button', { name: 'New message' });
@@ -13,6 +18,11 @@ export class MessagesPage {
     });
     this.newMessageModal = page.getByRole('dialog', { name: 'New message' });
     this.userSearchResults = page.getByRole('option');
+    this.messageInput = page.getByRole('textbox');
+    this.sendMessageButton = page.getByRole('button', {
+      name: 'Send',
+      exact: true,
+    });
   }
 
   async gotoMessagesPage() {
@@ -29,4 +39,12 @@ export class MessagesPage {
     await expect(this.userSearchResults).toContainText(query);
   }
 
+  async openChatWith() {
+    await this.userSearchResults.click();
+  }
+
+  async writeAMessage(message: string) {
+    await this.messageInput.fill(message);
+    await this.sendMessageButton.click();
+  }
 }

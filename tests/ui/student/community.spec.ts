@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { CommunityPage } from '@pages/community.page';
 import { LoginPage } from '@pages/login.page';
 import { ProfilePage } from '@pages/profile.page';
+
 test.describe('Community page', () => {
   const threadTitle = 'Test Thread Title';
   const threadTag = 'Test Tag';
@@ -10,6 +11,7 @@ test.describe('Community page', () => {
   test('The thread title in the list matches the entered Title exactly', async ({
     page,
   }) => {
+    
     const communityPage = new CommunityPage(page);
     const loginPage = new LoginPage(page);
 
@@ -142,6 +144,7 @@ test.describe('Community page', () => {
       await communityPage.fillThreadTag(threadTag);
       await communityPage.clickPostThreadButton();
     });
+
     await test.step('Post a new reply', async () => {
       await communityPage.postreply(threadReply);
       await expect(page.getByText(threadReply)).toBeVisible();
