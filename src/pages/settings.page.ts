@@ -1,7 +1,9 @@
 import { Locator, Page, expect } from '@playwright/test';
 
 export class SettingsPage {
+
   readonly page: Page;
+  
   readonly fullNameInput: Locator;
   readonly emailInput: Locator;
   readonly currentRoleInput: Locator;

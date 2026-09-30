@@ -1,7 +1,9 @@
 import { Page, Locator, expect } from '@playwright/test';
 
 export class LoginPage {
+
   readonly page: Page;
+  
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
@@ -25,9 +27,5 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(pass);
     await this.submitButton.click();
-  }
-
-  async verifySelfURL() {
-    await expect(this.page).toHaveURL(/\/login/);
   }
 }
