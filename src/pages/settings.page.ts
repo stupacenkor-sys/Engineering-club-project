@@ -227,12 +227,42 @@ export class SettingsPage {
   }
 
   async ensureAvatar(avatar: string) {
-  const currentAvatar = await this.avatarInput.inputValue();
+    const currentAvatar = await this.avatarInput.inputValue();
 
-  if (currentAvatar !== avatar) {
-    await this.changeAvatar(avatar);
-    await this.saveChangesAndWait();
-    await this.page.reload();
+    if (currentAvatar !== avatar) {
+      await this.changeAvatar(avatar);
+      await this.saveChangesAndWait();
+      await this.page.reload();
+    }
   }
-}
+
+  async ensureProfileData(userData: {
+    avatar: string;
+    fullName: string;
+    email: string;
+    currentRole: string;
+    targetRole: string;
+    bio: string;
+  }) {
+    const currentFullName = await this.fullNameInput.inputValue();
+    const currentEmail = await this.emailInput.inputValue();
+    const currentRole = await this.currentRoleInput.inputValue();
+    const currentTargetRole = await this.targetRoleInput.inputValue();
+    const currentBio = await this.bioInput.inputValue();
+    const currentAvatar = await this.avatarInput.inputValue();
+
+    const isCorrectState =
+      currentFullName === userData.fullName &&
+      currentEmail === userData.email &&
+      currentRole === userData.currentRole &&
+      currentTargetRole === userData.targetRole &&
+      currentBio === userData.bio &&
+      currentAvatar === userData.avatar;
+
+    if (!isCorrectState) {
+      await this.updateProfile(userData);
+      await this.saveChangesAndWait();
+      await this.page.reload();
+    }
+  }
 }
