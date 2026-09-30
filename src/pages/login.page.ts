@@ -1,12 +1,11 @@
 import { Page, Locator, expect } from '@playwright/test';
 
 export class LoginPage {
+
   readonly page: Page;
-
-  readonly emailInput: Locator;
-
-  readonly passwordInput: Locator;
   
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
   readonly submitButton: Locator;
 
   constructor(page: Page) {

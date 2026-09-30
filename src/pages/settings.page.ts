@@ -1,38 +1,24 @@
 import { Locator, Page, expect } from '@playwright/test';
 
 export class SettingsPage {
+
   readonly page: Page;
-
-  readonly fullNameInput: Locator;
-
-  readonly emailInput: Locator;
-
-  readonly currentRoleInput: Locator;
-
-  readonly targetRoleInput: Locator;
-
-  readonly bioInput: Locator;
-
-  readonly avatarInput: Locator;
-
-  readonly saveChangesButton: Locator;
-
-  readonly savedText: Locator;
-
-  readonly homeworkReviewCheckbox: Locator;
-
-  readonly homeworkReviewLabel: Locator;
-
-  readonly mentoringReminderCheckbox: Locator;
-
-  readonly mentoringReminderLabel: Locator;
-
-  readonly streakNudgeCheckbox: Locator;
-
-  readonly streakNudgeLabel: Locator;
-
-  readonly communityRepliesCheckbox: Locator;
   
+  readonly fullNameInput: Locator;
+  readonly emailInput: Locator;
+  readonly currentRoleInput: Locator;
+  readonly targetRoleInput: Locator;
+  readonly bioInput: Locator;
+  readonly avatarInput: Locator;
+  readonly saveChangesButton: Locator;
+  readonly savedText: Locator;
+  readonly homeworkReviewCheckbox: Locator;
+  readonly homeworkReviewLabel: Locator;
+  readonly mentoringReminderCheckbox: Locator;
+  readonly mentoringReminderLabel: Locator;
+  readonly streakNudgeCheckbox: Locator;
+  readonly streakNudgeLabel: Locator;
+  readonly communityRepliesCheckbox: Locator;
   readonly communityRepliesLabel: Locator;
 
   constructor(page: Page) {
