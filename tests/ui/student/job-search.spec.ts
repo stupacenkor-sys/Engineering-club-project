@@ -21,16 +21,16 @@ const student2: Credentials = {
 };
 
 test('Login as two different students', async ({ page }) => {
-  const loginPage = new LoginPage(page); // page object for the login page
-  const sidebar = new Sidebar(page); // page object for the sidebar
+  const loginPage = new LoginPage(page);
+  const sidebar = new Sidebar(page);
 
   await test.step('go to Login Page', async () => {
-    await loginPage.goto(); // page object for the login page
-    await loginPage.verifySelfURL(); // page object for the login page
+    await loginPage.goto();
+    await loginPage.verifySelfURL();
   });
 
   await test.step('Login as student', async () => {
-    await loginPage.login(student1.email, student1.password); // page object for the login page
-    await sidebar.verifyURL.dashboard(); // page object for the sidebar
+    await loginPage.login(student1.email, student1.password);
+    await sidebar.verifyURL.dashboard();
   });
 });
