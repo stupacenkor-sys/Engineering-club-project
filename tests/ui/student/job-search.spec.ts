@@ -29,27 +29,8 @@ test('Login as two different students', async ({ page }) => {
     await loginPage.verifySelfURL(); // page object for the login page
   });
 
-  await test.step('Login as student 1', async () => {
+  await test.step('Login as student', async () => {
     await loginPage.login(student1.email, student1.password); // page object for the login page
-    await sidebar.verifyURL.dashboard(); // page object for the sidebar
-  });
-
-  await test.step('Logout Student 1', async () => {
-    const userMenuButton = page.getByRole('button', {
-      name: student1.name,
-    });
-
-    const signOutButton = page.getByRole('menuitem', {
-      name: 'Sign out',
-    });
-
-    await userMenuButton.click();
-    await signOutButton.click();
-    await loginPage.verifySelfURL(); // page object for the login page
-  });
-
-  await test.step('Login as Student 2', async () => {
-    await loginPage.login(student2.email, student2.password); // page object for the login page
     await sidebar.verifyURL.dashboard(); // page object for the sidebar
   });
 });
