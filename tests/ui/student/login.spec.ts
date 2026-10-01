@@ -1,6 +1,7 @@
 import { LoginPage } from '@pages/login.page';
 import { test, expect } from '@playwright/test';
-import { Sidebar } from '../../../src/sidebar';
+import { Sidebar } from '@pages/../sidebar';
+import { JobSearchPage } from '@pages/job-search.page'; 
 
 interface Credentials {
   name: string;
@@ -20,36 +21,64 @@ const student2: Credentials = {
   password: 'password123',
 };
 
-test('Login as two different students', async ({ page }) => {
-  const loginPage = new LoginPage(page); // page object for the login page
-  const sidebar = new Sidebar(page); // page object for the sidebar
+// обьеднання групи тестів в describe блок, щоб можна було запускати їх разом або окремо
+test.describe('Job Search Page', () => {
+  test('Login as two different students', async ({ page }) => {
+    const loginPage = new LoginPage(page); 
+    const sidebar = new Sidebar(page); 
 
-  await test.step('go to Login Page', async () => {
-    await loginPage.goto(); // page object for the login page
-    await loginPage.verifySelfURL(); // page object for the login page
-  });
-
-  await test.step('Login as student 1', async () => {
-    await loginPage.login(student1.email, student1.password); // page object for the login page
-    await sidebar.verifyURL.dashboard(); // page object for the sidebar
-  });
-
-  await test.step('Logout Student 1', async () => {
-    const userMenuButton = page.getByRole('button', {
-      name: student1.name,
+    await test.step('go to Login Page', async () => {
+      await loginPage.goto(); 
+      await loginPage.verifySelfURL(); 
     });
 
-    const signOutButton = page.getByRole('menuitem', {
-      name: 'Sign out',
+    await test.step('Login as student 1', async () => {
+      await loginPage.login(student1.email, student1.password); 
+      await sidebar.verifyURL.dashboard(); 
     });
 
-    await userMenuButton.click();
-    await signOutButton.click();
-    await loginPage.verifySelfURL(); // page object for the login page
+    await test.step('Logout Student 1', async () => {
+      const userMenuButton = page.getByRole('button', {
+        name: student1.name,
+      });
+
+      const signOutButton = page.getByRole('menuitem', {
+        name: 'Sign out',
+      });
+
+      await userMenuButton.click();
+      await signOutButton.click();
+      await loginPage.verifySelfURL(); 
+    });
+
+    await test.step('Login as Student 2', async () => {
+      await loginPage.login(student2.email, student2.password); 
+      await sidebar.verifyURL.dashboard(); 
+    });
   });
 
-  await test.step('Login as Student 2', async () => {
-    await loginPage.login(student2.email, student2.password); // page object for the login page
-    await sidebar.verifyURL.dashboard(); // page object for the sidebar
+  test('verify title on the page Job Search', async ({ page }) => {
+    const loginPage = new LoginPage(page); 
+    const sidebar = new Sidebar(page);
+    const jobSearchPage = new JobSearchPage(page); 
+
+    await test.step('go to Login Page', async () => {
+      await loginPage.goto(); 
+      await loginPage.verifySelfURL(); 
+    });
+
+    await test.step('Login as student 1', async () => {
+      await loginPage.login(student1.email, student1.password); 
+      await sidebar.verifyURL.dashboard(); 
+    });
+
+    await test.step('Go to Job Search Page', async () => {
+      await sidebar.clickLink.jobSearch()
+      await sidebar.verifyURL.jobSearch()
+    });
+
+   await test.step('verify title on the page Job Search', async () => {
+      await jobSearchPage.verifyTitle()
+    });
   });
 });
