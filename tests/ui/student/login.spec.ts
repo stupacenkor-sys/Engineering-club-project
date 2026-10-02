@@ -22,7 +22,7 @@ const student2: Credentials = {
 };
 
 // обьеднання групи тестів в describe блок, щоб можна було запускати їх разом або окремо
-test.describe.only('Job Search Page', () => {
+test.describe('Job Search Page', () => {
   test.beforeEach(async ({ page }) => {
     const loginPage = new LoginPage(page);
     const sidebar = new Sidebar(page);
