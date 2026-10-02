@@ -6,7 +6,7 @@ import { Sidebar } from '@pages/../sidebar';
 const STUDENT_EMAIL = process.env.STUDENT_EMAIL!;
 const STUDENT_PASSWORD = process.env.PASSWORD!;
 
-test.describe('Passing skill checks by student', () => {
+test.describe.only('Passing skill checks by student', () => {
   test.beforeEach(
     'should navigate to skill check page when clicking link',
     async ({ page }) => {
@@ -84,6 +84,16 @@ test.describe('Passing skill checks by student', () => {
 
     await test.step('Verify filter is on the page', async () => {
       await skillCheckPage.clickLevelBasicAreaQAAndVerifyList();
+    });
+  });
+
+  test('should verify redirect to quizz page when clicking quizz title', async ({
+    page,
+  }) => {
+    const skillCheckPage = new SkillCheckPage(page);
+
+    await test.step('Verify quizz card is on the page', async () => {
+      await skillCheckPage.clickCICDQuizzAndVerifyRedirect();
     });
   });
 });
