@@ -1,7 +1,7 @@
 import { LoginPage } from '@pages/login.page';
 import { test, expect } from '@playwright/test';
 import { Sidebar } from '@pages/../sidebar';
-import { JobSearchPage } from '@pages/job-search.page'; 
+import { JobSearchPage } from '@pages/job-search.page';
 
 interface Credentials {
   name: string;
@@ -22,63 +22,46 @@ const student2: Credentials = {
 };
 
 // обьеднання групи тестів в describe блок, щоб можна було запускати їх разом або окремо
-test.describe('Job Search Page', () => {
-  test('Login as two different students', async ({ page }) => {
-    const loginPage = new LoginPage(page); 
-    const sidebar = new Sidebar(page); 
+test.describe.only('Job Search Page', () => {
+  test.beforeEach(async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const sidebar = new Sidebar(page);
 
     await test.step('go to Login Page', async () => {
-      await loginPage.goto(); 
-      await loginPage.verifySelfURL(); 
+      await loginPage.goto();
+      await loginPage.verifySelfURL();
     });
 
     await test.step('Login as student 1', async () => {
-      await loginPage.login(student1.email, student1.password); 
-      await sidebar.verifyURL.dashboard(); 
+      await loginPage.login(student1.email, student1.password);
+      await sidebar.verifyURL.dashboard();
     });
 
-    await test.step('Logout Student 1', async () => {
-      const userMenuButton = page.getByRole('button', {
-        name: student1.name,
-      });
-
-      const signOutButton = page.getByRole('menuitem', {
-        name: 'Sign out',
-      });
-
-      await userMenuButton.click();
-      await signOutButton.click();
-      await loginPage.verifySelfURL(); 
-    });
-
-    await test.step('Login as Student 2', async () => {
-      await loginPage.login(student2.email, student2.password); 
-      await sidebar.verifyURL.dashboard(); 
+    await test.step('Go to Job Search Page', async () => {
+      await sidebar.clickLink.jobSearch();
+      await sidebar.verifyURL.jobSearch();
     });
   });
 
   test('verify title on the page Job Search', async ({ page }) => {
-    const loginPage = new LoginPage(page); 
-    const sidebar = new Sidebar(page);
-    const jobSearchPage = new JobSearchPage(page); 
+    const jobSearchPage = new JobSearchPage(page);
 
-    await test.step('go to Login Page', async () => {
-      await loginPage.goto(); 
-      await loginPage.verifySelfURL(); 
+    await test.step('verify title on the page Job Search', async () => {
+      await jobSearchPage.verifyTitle();
+    });
+  });
+
+  test('Check after clic update link button search buttons appear', async ({
+    page,
+  }) => {
+    const jobSearchPage = new JobSearchPage(page);
+
+    await test.step('should fill search box and click update link', async () => {
+      await jobSearchPage.fillTextBoxRolesAndClickUpdateLinks();
     });
 
-    await test.step('Login as student 1', async () => {
-      await loginPage.login(student1.email, student1.password); 
-      await sidebar.verifyURL.dashboard(); 
-    });
-
-    await test.step('Go to Job Search Page', async () => {
-      await sidebar.clickLink.jobSearch()
-      await sidebar.verifyURL.jobSearch()
-    });
-
-   await test.step('verify title on the page Job Search', async () => {
-      await jobSearchPage.verifyTitle()
+     await test.step('verify add role search', async () => {
+      await jobSearchPage.verifyAddRoleSearch();
     });
   });
 });
