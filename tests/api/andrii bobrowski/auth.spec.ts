@@ -1,7 +1,7 @@
 import { test } from '@pages/../fixtures/api.fixtures';
 import { AuthApi } from '../../../src/api/auth.api';
 
-test.describe.only('Authentication API', () => {
+test.describe('Authentication API', () => {
   let authApi: AuthApi;
 
   test.beforeEach(async ({ adminRequest }) => {
