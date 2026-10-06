@@ -87,9 +87,7 @@ export class Sidebar {
     };
 
     this.clickLink = this.mapLinks((link) => async () => link.locator.click());
-    this.verifyURL = this.mapLinks(
-      (link) => async () => expect(this.page).toHaveURL(link.urlPattern),
-    );
+    this.verifyURL = this.mapLinks((link) => async () => expect(this.page).toHaveURL(link.urlPattern));
   }
 
   /**
@@ -97,17 +95,13 @@ export class Sidebar {
    * @param action - The action to perform on each link like locator.click()
    * @returns A record mapping each link name to its corresponding action
    */
-  private mapLinks<T>(
-    action: (value: SidebarLinkValue) => T,
-  ): Record<SidebarLinkNames, T> {
+  private mapLinks<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkNames, T> {
     const result = {} as Record<SidebarLinkNames, T>;
     const linkNames = Object.keys(this.links) as SidebarLinkNames[];
 
     for (const name of linkNames) {
       result[name] = action(this.links[name]);
     }
-
-    console.dir('Mapped links:', result); // Debugging line to check the mapping
 
     return result;
   }
