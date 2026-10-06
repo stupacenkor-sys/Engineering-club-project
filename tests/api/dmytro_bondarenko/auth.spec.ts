@@ -6,7 +6,7 @@ import { AuthApi } from '@pages/../api/auth.api';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.PASSWORD!;
 
-test.describe.only('Authentication API', () => {
+test.describe('Authentication API', () => {
   test.beforeEach('Authenticating as admin', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const sidebar = new Sidebar(page);
