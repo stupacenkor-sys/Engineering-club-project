@@ -3,12 +3,12 @@ import { LoginPage } from '@pages/login.page';
 import { DashboardPage } from '@pages/dashboard.page';
 import { CoursesPage } from '@pages/courses.page';
 import { CourseDetailsPage } from '@pages/course-details.page';
-import { LearningPathPage } from '@pages/learning-path.page';
 import { Sidebar } from '../../../../src/sidebar';
 import { studentData } from '../../../../src/test-data/users';
 import {
-  featuredLearningPath,
+  automationTestingCourse,
   manualTestingCourse,
+  pythonFundamentalsCourse,
 } from '../../../../src/test-data/courses';
 
 test.describe('Courses catalog', () => {
@@ -93,52 +93,61 @@ test.describe('Courses catalog', () => {
     });
   });
 
-  test('should display featured learning path when catalog is loaded', async () => {
+  test('should display course progress states when catalog is loaded', async () => {
     await coursesPage.gotoCourses();
 
-    await test.step('Verify featured path block is visible', async () => {
-      await expect(coursesPage.featuredPath).toBeVisible();
-      await expect(coursesPage.viewPathLink).toBeVisible();
+    const courses = [
+      { title: manualTestingCourse.title, status: 'Completed' },
+      { title: automationTestingCourse.title, status: 'In progress' },
+      { title: pythonFundamentalsCourse.title, status: 'Not started' },
+    ];
+
+    for (const course of courses) {
+      await test.step(`Verify "${course.title}" status`, async () => {
+        const card = coursesPage.getCourseCard(course.title);
+        await expect(card).toBeVisible();
+        await expect(coursesPage.getCardParts(card).status).toHaveText(
+          course.status,
+        );
+      });
+    }
+  });
+
+  test('should show correct in-progress course information when catalog is loaded', async () => {
+    await coursesPage.gotoCourses();
+    const card = coursesPage.getCourseCard(automationTestingCourse.title);
+    const parts = coursesPage.getCardParts(card);
+
+    await test.step(`Verify "${automationTestingCourse.title}" card data`, async () => {
+      await expect(parts.kicker).toHaveText(automationTestingCourse.kicker, {
+        ignoreCase: true,
+      });
+      await expect(parts.xpEarned).toContainText(
+        new RegExp(
+          `/\\s*${automationTestingCourse.xpTotal.toLocaleString('en-US')} XP`,
+        ),
+      );
+      await expect(parts.meta).toContainText(
+        `${automationTestingCourse.workloadHours} h · Mentor: ${automationTestingCourse.mentorShortName}`,
+      );
+      await expect(parts.actionLink).toHaveText(automationTestingCourse.action);
     });
   });
 
-  test('should show correct featured learning path information when catalog is loaded', async () => {
-    await coursesPage.gotoCourses();
-
-    await test.step('Verify title and description', async () => {
-      await expect(coursesPage.featuredPathTitle).toHaveText(
-        featuredLearningPath.title,
-      );
-      await expect(coursesPage.featuredPath).toContainText(
-        featuredLearningPath.description,
-      );
-      await expect(coursesPage.featuredPath).toContainText(
-        featuredLearningPath.mentorshipTag,
-      );
-    });
-
-    await test.step('Verify path steps are listed', async () => {
-      for (const step of featuredLearningPath.steps) {
-        await expect(
-          coursesPage.featuredPath.getByText(step, { exact: true }),
-        ).toBeVisible();
-      }
-    });
-  });
-
-  test('should open learning path when View path is clicked', async ({
+  test('should open in-progress course when Continue is clicked', async ({
     page,
   }) => {
-    const learningPathPage = new LearningPathPage(page);
+    const courseDetailsPage = new CourseDetailsPage(page);
     await coursesPage.gotoCourses();
 
-    await test.step('Click View path', async () => {
-      await coursesPage.clickViewPath();
+    await test.step('Click Continue on in-progress course', async () => {
+      await coursesPage.clickCourseAction(automationTestingCourse.title);
     });
 
-    await test.step('Verify learning path page is opened', async () => {
-      await learningPathPage.expectLearningPathOpened(
-        featuredLearningPath.title,
+    await test.step('Verify course page is opened', async () => {
+      await courseDetailsPage.expectCourseOpened(
+        automationTestingCourse.slug,
+        automationTestingCourse.title,
       );
     });
   });
