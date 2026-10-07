@@ -21,7 +21,7 @@ type AttemptedQuizz = QuizzBase & {
 export type Quizz = NotAttemptedQuizz | AttemptedQuizz;
 
 export const ciCdQuizz: AttemptedQuizz = {
-  title: 'CI/CD: основи для тестувальника',
+  title: 'CI/CD: the basics for a tester',
   urlPattern: /\/ci-cd-basics/,
   description:
     'Що таке pipeline, чим continuous integration відрізняється від delivery і deployment, і що робити тестувальнику, коли збірка червона. Без Docker і YAML — лише принципи.',
