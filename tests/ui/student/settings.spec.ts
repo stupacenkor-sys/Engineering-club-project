@@ -72,11 +72,17 @@ test.describe('Account Settings', () => {
     }) => {
       const settingsPage = new SettingsPage(page);
 
+      await settingsPage.ensureProfileData(studentData)
+
       await settingsPage.verifyProfileData(studentData);
     });
 
     test('should display avatar on settings page', async ({ page }) => {
       const settingsPage = new SettingsPage(page);
+
+      await test.step('Reset avatar state', async () => {
+        await settingsPage.ensureAvatar(studentData.avatar);
+      });
 
       await settingsPage.verifyAvatarDisplayed(studentData.avatar);
     });
@@ -84,33 +90,39 @@ test.describe('Account Settings', () => {
     test('should change avatar when valid value is saved', async ({ page }) => {
       const settingsPage = new SettingsPage(page);
 
-      const newAvatar = 'MM';
+      const newAvatar = 'DD';
 
-      await test.step('Change avatar', async () => {
-        await settingsPage.changeAvatar(newAvatar);
+      await test.step('Reset avatar state', async () => {
+        await settingsPage.ensureAvatar(studentData.avatar);
       });
 
-      await test.step('Save changes', async () => {
-        await settingsPage.saveChangesAndWait();
-      });
+      try {
+        await test.step('Change avatar', async () => {
+          await settingsPage.changeAvatar(newAvatar);
+        });
 
-      await test.step('Verify avatar is displayed', async () => {
-        await settingsPage.verifyAvatarDisplayed(newAvatar);
-      });
+        await test.step('Save changes', async () => {
+          await settingsPage.saveChangesAndWait();
+        });
 
-      await test.step('Restore original avatar', async () => {
-        await page.reload();
+        await test.step('Verify avatar is displayed', async () => {
+          await settingsPage.verifyAvatarDisplayed(newAvatar);
+        });
+      } finally {
+        await test.step('Restore original avatar', async () => {
+          await page.reload();
 
-        await settingsPage.changeAvatar(studentData.avatar);
-        await settingsPage.saveChangesAndWait();
-      });
+          await settingsPage.changeAvatar(studentData.avatar);
+          await settingsPage.saveChangesAndWait();
+        });
 
-      await test.step('Verify original avatar is restored', async () => {
-        await page.reload();
+        await test.step('Verify original avatar is restored', async () => {
+          await page.reload();
 
-        await settingsPage.verifyAvatarInputValue(studentData.avatar);
-        await settingsPage.verifyAvatarDisplayed(studentData.avatar);
-      });
+          await settingsPage.verifyAvatarInputValue(studentData.avatar);
+          await settingsPage.verifyAvatarDisplayed(studentData.avatar);
+        });
+      }
     });
 
     test('should accept avatar with 1 to 3 letters and reject additional letters', async ({
@@ -138,14 +150,15 @@ test.describe('Account Settings', () => {
     }) => {
       const settingsPage = new SettingsPage(page);
 
+      await settingsPage.ensureProfileData(studentData);
+
       try {
         await test.step('Update profile fields', async () => {
           await settingsPage.updateProfile(updatedProfileData);
         });
 
         await test.step('Save changes', async () => {
-          await settingsPage.saveChanges();
-          await settingsPage.verifySaved();
+          await settingsPage.saveChangesAndWait();
         });
 
         await test.step('Reload settings page', async () => {
@@ -160,8 +173,7 @@ test.describe('Account Settings', () => {
       } finally {
         await test.step('Restore original profile data', async () => {
           await settingsPage.updateProfile(studentData);
-          await settingsPage.saveChanges();
-          await settingsPage.verifySaved();
+          await settingsPage.saveChangesAndWait();
         });
       }
 
@@ -192,6 +204,155 @@ test.describe('Account Settings', () => {
         await page.reload();
 
         await expect(settingsPage.emailInput).toHaveValue(studentData.email);
+      });
+    });
+
+    test('should select weekly study goal', async ({ page }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Select weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal('8');
+      });
+
+      await test.step('Verify weekly study goal is selected', async () => {
+        await settingsPage.verifyWeeklyGoalSelected('8');
+      });
+    });
+
+    test('should save selected learning preferences', async ({ page }) => {
+      const settingsPage = new SettingsPage(page);
+
+      const originalWeeklyGoal = '4';
+      const newWeeklyGoal = '8';
+
+      await test.step('Select weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal('8');
+      });
+
+      await test.step('Save changes', async () => {
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify weekly study goal is saved', async () => {
+        await page.reload();
+
+        await settingsPage.verifyWeeklyGoalSelected(newWeeklyGoal);
+      });
+
+      await test.step('Restore original weekly study goal', async () => {
+        await settingsPage.selectWeeklyGoal(originalWeeklyGoal);
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify original weekly study goal is restored', async () => {
+        await page.reload();
+        await settingsPage.verifyWeeklyGoalSelected(originalWeeklyGoal);
+      });
+    });
+
+    test('should enable and disable homework review notification', async ({
+      page,
+    }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Disable homework review notification', async () => {
+        await settingsPage.setHomeworkReviewNotification(false);
+        await settingsPage.verifyHomeworkReviewNotificationUnchecked();
+      });
+
+      await test.step('Enable homework review notification', async () => {
+        await settingsPage.setHomeworkReviewNotification(true);
+        await settingsPage.verifyHomeworkReviewNotificationChecked();
+      });
+    });
+
+    test('should enable and disable mentoring session reminder notification', async ({
+      page,
+    }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Enable mentoring session reminder notification', async () => {
+        await settingsPage.setMentoringReminderNotification(true);
+        await settingsPage.verifyMentoringReminderNotificationChecked();
+      });
+
+      await test.step('Disable mentoring session reminder notification', async () => {
+        await settingsPage.setMentoringReminderNotification(false);
+        await settingsPage.verifyMentoringReminderNotificationUnchecked();
+      });
+    });
+
+    test('should enable and disable streak nudge notification', async ({
+      page,
+    }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Disable streak nudge notification', async () => {
+        await settingsPage.setStreakNudgeNotification(false);
+        await settingsPage.verifyStreakNudgeNotificationUnchecked();
+      });
+
+      await test.step('Enable streak nudge notification', async () => {
+        await settingsPage.setStreakNudgeNotification(true);
+        await settingsPage.verifyStreakNudgeNotificationChecked();
+      });
+    });
+
+    test('should enable and disable community replies notification', async ({
+      page,
+    }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Enable community replies notification', async () => {
+        await settingsPage.setCommunityRepliesNotification(true);
+        await settingsPage.verifyCommunityRepliesNotificationChecked();
+      });
+
+      await test.step('Disable community replies notification', async () => {
+        await settingsPage.setCommunityRepliesNotification(false);
+        await settingsPage.verifyCommunityRepliesNotificationUnchecked();
+      });
+    });
+
+    test('should save selected notification preferences', async ({ page }) => {
+      const settingsPage = new SettingsPage(page);
+
+      await test.step('Update notification preferences', async () => {
+        await settingsPage.setHomeworkReviewNotification(false);
+        await settingsPage.setMentoringReminderNotification(true);
+        await settingsPage.setStreakNudgeNotification(false);
+        await settingsPage.setCommunityRepliesNotification(true);
+      });
+
+      await test.step('Save changes', async () => {
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify notification preferences are saved', async () => {
+        await page.reload();
+
+        await settingsPage.verifyHomeworkReviewNotificationUnchecked();
+        await settingsPage.verifyMentoringReminderNotificationChecked();
+        await settingsPage.verifyStreakNudgeNotificationUnchecked();
+        await settingsPage.verifyCommunityRepliesNotificationChecked();
+      });
+
+      await test.step('Restore original notification preferences', async () => {
+        await settingsPage.setHomeworkReviewNotification(true);
+        await settingsPage.setMentoringReminderNotification(false);
+        await settingsPage.setStreakNudgeNotification(true);
+        await settingsPage.setCommunityRepliesNotification(false);
+
+        await settingsPage.saveChangesAndWait();
+      });
+
+      await test.step('Verify original notification preferences are restored', async () => {
+        await page.reload();
+
+        await settingsPage.verifyHomeworkReviewNotificationChecked();
+        await settingsPage.verifyMentoringReminderNotificationUnchecked();
+        await settingsPage.verifyStreakNudgeNotificationChecked();
+        await settingsPage.verifyCommunityRepliesNotificationUnchecked();
       });
     });
   });

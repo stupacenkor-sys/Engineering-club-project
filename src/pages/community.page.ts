@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 export class CommunityPage {
+
   readonly page: Page;
   readonly newThreadButton: Locator;
   readonly threadTitleInput: Locator;
@@ -10,6 +11,7 @@ export class CommunityPage {
   readonly authoroftheThread: Locator;
   readonly writeReplyInput: Locator;
   readonly postReplyButton: Locator;
+  
   constructor(page: Page) {
     this.page = page;
     this.newThreadButton = page.getByRole('button', { name: 'New thread' });

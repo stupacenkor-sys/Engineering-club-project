@@ -1,7 +1,9 @@
 import { Locator, Page, expect } from '@playwright/test';
 
 export class SettingsPage {
+
   readonly page: Page;
+  
   readonly fullNameInput: Locator;
   readonly emailInput: Locator;
   readonly currentRoleInput: Locator;
@@ -10,6 +12,14 @@ export class SettingsPage {
   readonly avatarInput: Locator;
   readonly saveChangesButton: Locator;
   readonly savedText: Locator;
+  readonly homeworkReviewCheckbox: Locator;
+  readonly homeworkReviewLabel: Locator;
+  readonly mentoringReminderCheckbox: Locator;
+  readonly mentoringReminderLabel: Locator;
+  readonly streakNudgeCheckbox: Locator;
+  readonly streakNudgeLabel: Locator;
+  readonly communityRepliesCheckbox: Locator;
+  readonly communityRepliesLabel: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,6 +31,32 @@ export class SettingsPage {
     this.avatarInput = page.getByRole('textbox', { name: 'Avatar' });
     this.saveChangesButton = page.getByRole('button', { name: 'Save changes' });
     this.savedText = page.getByText('Saved', { exact: true });
+
+    this.homeworkReviewCheckbox = page.locator(
+      'input[name="notifyHomeworkReview"]',
+    );
+    this.homeworkReviewLabel = page
+      .locator('label')
+      .filter({ hasText: 'Homework review completed' });
+
+    this.mentoringReminderCheckbox = page.locator(
+      'input[name="notifyMentoringReminders"]',
+    );
+    this.mentoringReminderLabel = page
+      .locator('label')
+      .filter({ hasText: 'Mentoring session reminders (24 h before)' });
+
+    this.streakNudgeCheckbox = page.locator('input[name="notifyStreakNudge"]');
+    this.streakNudgeLabel = page
+      .locator('label')
+      .filter({ hasText: 'Streak about to break (20:00 nudge)' });
+
+    this.communityRepliesCheckbox = page.locator(
+      'input[name="notifyCommunityReplies"]',
+    );
+    this.communityRepliesLabel = page
+      .locator('label')
+      .filter({ hasText: 'Community replies to my threads' });
   }
 
   async goto() {

@@ -97,3 +97,61 @@ chore(deps): update playwright to version 1.48
 - **Процес Code Review та злиття:**
   1. Мінімум 1 Approve: злиття в `main` дозволено тільки після схвалення іншим інженером.
   2. Тип злиття: Merge — усі проміжні коміти з робочої гілки об'єднуються в один чистий коміт в історії `main`.
+
+## 6. API Tests
+
+**Авторизація.** Окремого API для логіну немає, тому API-тести працюють через сесію з UI: фікстура `adminRequest` логіниться під адміном через `LoginPage` і віддає `page.request`. Він бере ті ж cookie, що й браузер, тож усі запити йдуть від імені адміна. Токени й cookie руками в тестах не підставляємо.
+
+**Структура:**
+```
+src/api/ai.api.ts               ← клієнт: методи, які шлють запити
+src/fixtures/api.fixtures.ts    ← adminRequest + фікстури клієнтів (aiApi, ...)
+tests/api/ai-chat.spec.ts       ← тести
+```
+
+**Клієнти (аналог Page Object, тільки для API):**
+1. Файл: `[розділ].api.ts` у `src/api/` — один файл на розділ API (`ai`, `messages`, ...).
+2. Клас: `PascalCase` із суфіксом `Api` (`AiApi`, `MessagesApi`).
+3. Методи називаються за дією, а не за HTTP-методом: `sendChatMessage()`, а не `postChat()`.
+4. Метод повертає відповідь як є (`APIResponse`), перевірок (`expect`) у клієнті немає — вони тільки в тестах.
+5. Шлях пишемо повністю, як у Swagger: `'/api/ai/chat'`.
+
+```ts
+export class AiApi {
+  constructor(private readonly request: APIRequestContext) {}
+
+  async sendChatMessage(message: string) {
+    return this.request.post('/api/ai/chat', { data: { message } });
+  }
+}
+```
+
+**Новий клієнт** підключаємо фікстурою в `api.fixtures.ts`:
+```ts
+messagesApi: async ({ adminRequest }, use) => {
+  await use(new MessagesApi(adminRequest));
+},
+```
+
+**Тести:**
+1. Файли лежать у `tests/api/`, назва за правилами з розділу 1 (`ai-chat.spec.ts`).
+2. `test` імпортуємо з фікстур, а не з `@playwright/test`, інакше `aiApi` не буде доступний.
+3. Кроки обгортаємо в `test.step`, як в UI-тестах.
+4. Перевіряємо не лише статус, а й тіло відповіді, якщо воно щось важливе повертає.
+
+```ts
+import { test, expect } from '../../src/fixtures/api.fixtures';
+
+test.describe('AI Assistant API', () => {
+  test('should return 200 when sending a question to AI chat', async ({ aiApi }) => {
+    await test.step('Send a question to the AI chat', async () => {
+      const response = await aiApi.sendChatMessage('What is Playwright?');
+      expect(response.status()).toBe(200);
+    });
+  });
+});
+```
+
+**Тестові дані.** Якщо тест щось створює (розмову, повідомлення, запис), по можливості видаляємо це після тесту, щоб не засмічувати акаунт.
+
+**Запуск:** `npm run test:api`.
