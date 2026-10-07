@@ -1,4 +1,11 @@
-export const areaFilters = {
+type FilterOption = {
+  label: string;
+  urlPattern: RegExp;
+};
+
+type FilterType = Record<string, FilterOption>;
+
+export const areaFilters: FilterType = {
   all: { label: 'All', urlPattern: /\/quizzes$/ },
   programmingTs: { label: 'Programming · TypeScript', urlPattern: /\?area=PROGRAMMING_TS/ },
   qaTheory: { label: 'QA theory', urlPattern: /\?area=QA_THEORY/ },
@@ -13,7 +20,7 @@ export const areaFilters = {
   performance: { label: 'Performance testing', urlPattern: /\?area=PERFORMANCE/ },
 } as const;
 
-export const levelFilters = {
+export const levelFilters: FilterType = {
   all: { label: 'All', urlPattern: /\/quizzes$/ },
   basic: { label: 'Basic', urlPattern: /[?&]level=BASIC/ },
   intermediate: { label: 'Intermediate', urlPattern: /[?&]level=INTERMEDIATE/ },
