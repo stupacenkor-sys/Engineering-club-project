@@ -1,10 +1,12 @@
 import { test as base, expect, APIRequestContext } from '@playwright/test';
 import { LoginPage } from '@pages/login.page';
 import { AiApi } from '../api/ai.api';
+import { AuthApi } from '../api/auth.api';
 
 type ApiFixtures = {
   adminRequest: APIRequestContext;
   aiApi: AiApi;
+  authApi: AuthApi;
 };
 
 export const test = base.extend<ApiFixtures>({
@@ -21,6 +23,10 @@ export const test = base.extend<ApiFixtures>({
 
   aiApi: async ({ adminRequest }, use) => {
     await use(new AiApi(adminRequest));
+  },
+
+  authApi: async ({ adminRequest }, use) => {
+    await use(new AuthApi(adminRequest));
   },
 });
 

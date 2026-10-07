@@ -1,3 +1,4 @@
+
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 
 type AuthStatusCode = 200 | 302;
@@ -25,6 +26,9 @@ export class AuthApi {
     this.request = request;
   }
 
+  async getSession() {
+    return this.request.get('/api/auth/session');
+  }
   async sendAuthProvidersRequest() {
     const response: APIResponse<AuthApiResponse> = await this.request.get(
       apiPaths.authProviders,
