@@ -8,10 +8,6 @@ export class CoursesPage {
   readonly pageSubtitle: Locator;
   readonly courseCards: Locator;
 
-  readonly featuredPath: Locator;
-  readonly featuredPathTitle: Locator;
-  readonly viewPathLink: Locator;
-
   constructor(page: Page) {
     this.page = page;
     const main = page.getByRole('main');
@@ -26,14 +22,6 @@ export class CoursesPage {
     this.courseCards = main
       .locator('.card')
       .filter({ has: page.locator('.card-title a') });
-
-    this.featuredPath = main
-      .locator('.card')
-      .filter({ hasText: 'Featured learning path' });
-    this.featuredPathTitle = this.featuredPath.locator('.card-title');
-    this.viewPathLink = this.featuredPath.getByRole('link', {
-      name: 'View path',
-    });
   }
 
   async gotoCourses() {
@@ -84,8 +72,8 @@ export class CoursesPage {
     await card.getByRole('link', { name: 'Enroll' }).click();
   }
 
-  async clickViewPath() {
-    await this.viewPathLink.click();
+  async clickCourseAction(courseTitle: string) {
+    await this.getCardParts(this.getCourseCard(courseTitle)).actionLink.click();
   }
 
   async expectCoursesPageOpened() {

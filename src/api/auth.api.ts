@@ -25,6 +25,14 @@ export class AuthApi {
     this.request = request;
   }
 
+  async sendRequest() {
+    return this.request.get(apiPaths.authProviders);
+  }
+
+  async verifyStatusCode(response: APIResponse, statusCode: AuthStatusCode) {
+    expect(response.status()).toBe(statusCode);
+  }
+
   async sendAuthProvidersRequest() {
     const response: APIResponse<AuthApiResponse> = await this.request.get(
       apiPaths.authProviders,

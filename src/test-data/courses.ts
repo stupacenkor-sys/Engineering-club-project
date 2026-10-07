@@ -1,6 +1,6 @@
 export const manualTestingCourse = {
   slug: 'manual-testing',
-  title: 'Мануальне тестування',
+  title: 'Manual Testing',
   kicker: 'Manual QA · 11 modules',
   xpTotal: 500,
   workloadHours: 75,
@@ -8,15 +8,17 @@ export const manualTestingCourse = {
   mentorShortName: 'D. Horbachov',
 };
 
-export const featuredLearningPath = {
-  title: 'Manual QA → Automation QA',
-  description:
-    'From QA foundations to a portfolio-ready Playwright framework, in one mentor-guided track. Homework is reviewed at every gate.',
-  steps: [
-    'SDLC · Тест-дизайн',
-    'TypeScript',
-    'SOLID · Патерни проєктування',
-    'TypeScript · Playwright · CI/CD',
-  ],
-  mentorshipTag: 'Mentorship included',
+export const automationTestingCourse = {
+  slug: 'aqa-typescript-playwright',
+  title: 'Test Automation with TS + Playwright',
+  kicker: 'Automation · 18 modules',
+  xpTotal: 3833,
+  workloadHours: 307,
+  mentorShortName: 'D. Horbachov',
+  action: 'Continue · Module 3',
+};
+
+export const pythonFundamentalsCourse = {
+  slug: 'python-fundamentals',
+  title: 'Programming Fundamentals in Python',
 };
