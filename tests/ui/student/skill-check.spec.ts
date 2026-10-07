@@ -86,4 +86,14 @@ test.describe('Passing skill checks by student', () => {
       await skillCheckPage.clickLevelBasicAreaQAAndVerifyList();
     });
   });
+
+  test('should verify redirect to quizz page when clicking quizz title', async ({
+    page,
+  }) => {
+    const skillCheckPage = new SkillCheckPage(page);
+
+    await test.step('Verify quizz card is on the page', async () => {
+      await skillCheckPage.clickCICDQuizzAndVerifyRedirect();
+    });
+  });
 });

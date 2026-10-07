@@ -30,9 +30,18 @@ export class SkillCheckList {
     await this.verifyList({ area: areaLabel, level: levelLabel });
   }
 
-  private async verifyList(filter: Labels) {
+  async clickListItemTitle(title: string) {
+    const item = this.items.getByRole('link', { name: title });
+    await item.click();
+  }
+
+  async verifyListIsNotEmpty() {
     const cards = await this.items.all();
     expect(cards.length).toBeGreaterThan(0);
+  }
+
+  private async verifyList(filter: Labels) {
+    const cards = await this.items.all();
 
     for (const card of cards) {
       if (filter.area) {
