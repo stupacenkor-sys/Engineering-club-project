@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "paths": { "@pages/*": ["src/pages/*"] },
+    "paths": {
+      "@src": ["./src"],
+      "@pages/*": ["./src/pages/*"],
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@api/*": ["./src/api/*"]
+    },
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
