@@ -1,34 +1,34 @@
 import { Page } from '@playwright/test';
-import { SkillCheckFilter } from './skill-check-filter';
-import { SkillCheckList } from './skill-check-list';
-import { SkillCheckQuizz } from './skill-check-quizz';
+import { SkillCheckFilterComponent } from './skill-check-filter';
+import { SkillCheckListComponent } from './skill-check-list';
+import { SkillCheckQuizzComponent } from './skill-check-quizz';
 import { ciCdQuizz } from '../../test-data/quizzes';
 
 export class SkillCheckPage {
-  readonly filter: SkillCheckFilter;
-  readonly list: SkillCheckList;
-  private quizz?: SkillCheckQuizz;
+  readonly filter: SkillCheckFilterComponent;
+  readonly list: SkillCheckListComponent;
+  private quizz?: SkillCheckQuizzComponent;
 
   constructor(readonly page: Page) {
-    this.filter = new SkillCheckFilter(page);
-    this.list = new SkillCheckList(page);
+    this.filter = new SkillCheckFilterComponent(page);
+    this.list = new SkillCheckListComponent(page);
   }
 
-  async clickLevelBasicAndVerifyList() {
+  async verifyListAfterClickLevelBasic() {
     await this.filter.clickLevelFilter.basic();
     await this.filter.verifyLevelFilter.basic();
 
     await this.list.verifyListByLevel('basic');
   }
 
-  async clickAreaQATheoryAndVerifyList() {
+  async verifyListAfterClickAreaQATheory() {
     await this.filter.clickAreaFilter.qaTheory();
     await this.filter.verifyAreaFilter.qaTheory();
 
     await this.list.verifyListByArea('qaTheory');
   }
 
-  async clickLevelBasicAreaQAAndVerifyList() {
+  async verifyListAfterClickLevelAndAreaFilter() {
     await this.filter.clickLevelFilter.basic();
     await this.filter.verifyLevelFilter.basic();
 
@@ -38,9 +38,9 @@ export class SkillCheckPage {
     await this.list.verifyListByAreaAndLevel('qaTheory', 'basic');
   }
 
-  async clickCICDQuizzAndVerifyRedirect() {
+  async verifyRedirectAfterClickCICDQuizz() {
     await this.list.clickListItemTitle(ciCdQuizz.title);
-    this.quizz = new SkillCheckQuizz(this.page, ciCdQuizz);
+    this.quizz = new SkillCheckQuizzComponent(this.page, ciCdQuizz);
     await this.quizz.verifyQuizzURL();
   }
 }

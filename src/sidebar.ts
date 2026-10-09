@@ -16,6 +16,8 @@ type SidebarLinkNames =
   | 'admin'
   | 'settings';
 
+type SidebarLinkVerifyNames = `verify${Capitalize<SidebarLinkNames>}`;
+
 type SidebarLinkValue = { locator: Locator; urlPattern: RegExp };
 
 export class Sidebar {
@@ -23,7 +25,7 @@ export class Sidebar {
 
   readonly links: Record<SidebarLinkNames, SidebarLinkValue>;
   readonly clickLink: Record<SidebarLinkNames, () => Promise<void>>;
-  readonly verifyURL: Record<SidebarLinkNames, () => Promise<void>>;
+  readonly verifyURL: Record<SidebarLinkVerifyNames, () => Promise<void>>;
 
   constructor(page: Page) {
     this.page = page;
@@ -86,8 +88,8 @@ export class Sidebar {
       },
     };
 
-    this.clickLink = this.mapLinks((link) => async () => link.locator.click());
-    this.verifyURL = this.mapLinks((link) => async () => expect(this.page).toHaveURL(link.urlPattern));
+    this.clickLink = this.mapClickLinks((link) => async () => link.locator.click());
+    this.verifyURL = this.mapVerifyURL((link) => async () => expect(this.page).toHaveURL(link.urlPattern));
   }
 
   /**
@@ -95,12 +97,32 @@ export class Sidebar {
    * @param action - The action to perform on each link like locator.click()
    * @returns A record mapping each link name to its corresponding action
    */
-  private mapLinks<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkNames, T> {
+  private mapClickLinks<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkNames, T> {
     const result = {} as Record<SidebarLinkNames, T>;
     const linkNames = Object.keys(this.links) as SidebarLinkNames[];
 
     for (const name of linkNames) {
       result[name] = action(this.links[name]);
+    }
+
+    return result;
+  }
+
+  /**
+   * Maps links to their URL verification actions.
+   * @param action - Verification action to perform on each link.
+   * @returns A record mapping each generated verification name to its action.
+   */
+  private mapVerifyURL<T>(action: (value: SidebarLinkValue) => T): Record<SidebarLinkVerifyNames, T> {
+    const result = {} as Record<SidebarLinkVerifyNames, T>;
+    const linkNames = Object.keys(this.links) as SidebarLinkNames[];
+
+    for (const name of linkNames) {
+      const firstCharUpper = name.charAt(0).toUpperCase();
+      const otherChars = name.slice(1);
+      const verifyName = `verify${firstCharUpper}${otherChars}` as SidebarLinkVerifyNames;
+
+      result[verifyName] = action(this.links[name]);
     }
 
     return result;

@@ -3,7 +3,7 @@ import { areaFilters, levelFilters, AreaFilterName, LevelFilterName } from './fi
 
 type FilterValue = { locator: Locator; urlPattern: RegExp };
 
-export class SkillCheckFilter {
+export class SkillCheckFilterComponent {
   readonly areaFilterContainer: Locator;
   readonly levelFilterContainer: Locator;
 

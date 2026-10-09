@@ -28,7 +28,7 @@ export default [
 
       'playwright/expect-expect': [
         'error',
-        { assertFunctionPatterns: ['^assert.*', '^verify.*'] },
+        { assertFunctionPatterns: ['^expect.*', '^verify.*', '^check.*'] },
       ],
 
       '@typescript-eslint/naming-convention': [

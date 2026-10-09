@@ -8,7 +8,7 @@ import {
 
 type Labels = { area?: AreaFilterName; level?: LevelFilterName };
 
-export class SkillCheckList {
+export class SkillCheckListComponent {
   readonly items: Locator;
 
   constructor(page: Page) {

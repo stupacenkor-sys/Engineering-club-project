@@ -13,7 +13,7 @@ test.describe('Authentication API', () => {
 
     await loginPage.goto();
     await loginPage.login(ADMIN_EMAIL, ADMIN_PASSWORD);
-    await sidebar.verifyURL.dashboard();
+    await sidebar.verifyURL.verifyDashboard();
   });
 
   test('should return a valid status when sending a request to the auth/providers endpoint', async ({
@@ -26,7 +26,7 @@ test.describe('Authentication API', () => {
     });
 
     await test.step('Validate the response status code is 200', async () => {
-      await authApi.ValidateProvidersResponseStatus(200);
+      await authApi.verifyProvidersResponseStatus(200);
     });
   });
 
@@ -40,8 +40,8 @@ test.describe('Authentication API', () => {
     });
 
     await test.step('Validate the response data', async () => {
-      await authApi.validateProvidersCountGraterThenZero();
-      await authApi.validateAuthProvidersResponseData();
+      await authApi.verifyProvidersCountGraterThenZero();
+      await authApi.verifyAuthProvidersResponseData();
     });
   });
 });
