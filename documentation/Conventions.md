@@ -5,17 +5,22 @@
 - **Файли тестів:** обов'язково розширення `.spec.ts`, назва в kebab-case (наприклад `auth-login.spec.ts`).
 - **Page Object Model (POM):**
   1. Файли сторінок: `[name].page.ts` у директорії `pages/` (наприклад, `login.page.ts`).
-  2. Назви класів: `PascalCase` із суфіксом `Page` (наприклад, `LoginPage`).
-  3. Методи: починаються з дієслова дії (`fillCredentials()`, `clickSubmit()`, `getErrorMessage()`).
+  2. Назви змінних: `camelCase` (наприклад `userData`, `programmingAreaFilter`).
+  3. Назви класів: `PascalCase` із суфіксом `Page` (наприклад, `LoginPage`).
+  4. Методи: починаються з дієслова дії (`fillCredentials()`, `clickSubmit()`, `getErrorMessage()`).
+  5. Методи перевірки: починаються з дієслів: verify, check, expect (`expectPasswordIncorect()`, `verifyURLIsCorrect()`).
 - **Структура тестів (describe / test):**
   1. `test.describe`: назва фічі чи компонента.
   2. `test`: шаблон `should [очікуваний результат] when [умова або дія]`.
+  3. `test.step`.
   3. Приклад:
 
 ```ts
 test.describe('Login Form', () => {
   test('should display validation error when email is invalid', async ({ page }) => {
-    // test code
+    await test.step('step description', async () => {
+      // ...
+    })
   });
 });
 ```

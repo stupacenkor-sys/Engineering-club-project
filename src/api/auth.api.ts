@@ -33,19 +33,19 @@ export class AuthApi {
     this.responseStatus = response.status();
   }
 
-  async ValidateProvidersResponseStatus(statusCode: AuthStatusCode) {
+  async verifyProvidersResponseStatus(statusCode: AuthStatusCode) {
     if (this.responseStatus) {
       expect(this.responseStatus).toBe(statusCode);
     }
   }
 
-  async validateProvidersCountGraterThenZero() {
+  async verifyProvidersCountGraterThenZero() {
     if (this.responseData) {
       expect(this.responseData.length).toBeGreaterThan(0);
     }
   }
 
-  async validateAuthProvidersResponseData() {
+  async verifyAuthProvidersResponseData() {
     if (this.responseData) {
       this.responseData.forEach((provider) => {
         expect(provider).toEqual({

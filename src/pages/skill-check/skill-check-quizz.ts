@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { Quizz } from '../../test-data/quizzes';
 
-export class SkillCheckQuizz {
+export class SkillCheckQuizzComponent {
   readonly page: Page;
 
   readonly title: Locator;

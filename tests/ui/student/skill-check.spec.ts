@@ -21,12 +21,12 @@ test.describe('Passing skill checks by student', () => {
       await test.step('Login as student', async () => {
         await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
 
-        await sidebar.verifyURL.dashboard();
+        await sidebar.verifyURL.verifyDashboard();
       });
 
       await test.step('Go to skill check page', async () => {
         await sidebar.clickLink.skillChecks();
-        await sidebar.verifyURL.skillChecks();
+        await sidebar.verifyURL.verifySkillChecks();
       });
     },
   );
@@ -63,7 +63,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.clickLevelBasicAndVerifyList();
+      await skillCheckPage.verifyListAfterClickLevelBasic();
     });
   });
 
@@ -73,7 +73,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.clickAreaQATheoryAndVerifyList();
+      await skillCheckPage.verifyListAfterClickAreaQATheory();
     });
   });
 
@@ -83,7 +83,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify filter is on the page', async () => {
-      await skillCheckPage.clickLevelBasicAreaQAAndVerifyList();
+      await skillCheckPage.verifyListAfterClickLevelAndAreaFilter();
     });
   });
 
@@ -93,7 +93,7 @@ test.describe('Passing skill checks by student', () => {
     const skillCheckPage = new SkillCheckPage(page);
 
     await test.step('Verify quizz card is on the page', async () => {
-      await skillCheckPage.clickCICDQuizzAndVerifyRedirect();
+      await skillCheckPage.verifyRedirectAfterClickCICDQuizz();
     });
   });
 });

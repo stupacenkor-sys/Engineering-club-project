@@ -58,7 +58,7 @@ export class CommunityPage {
   }
   async verifyThreadAuthorIsCurrentUser(Name: string) {
     await expect(this.page).toHaveURL(/\/community\/[^/]+$/);
-    let threadAuthor = ((await this.authoroftheThread.textContent()) ?? '')
+    const threadAuthor = ((await this.authoroftheThread.textContent()) ?? '')
       .split(' · ')[0]
       .trim();
 
